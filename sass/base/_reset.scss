@@ -1,0 +1,53 @@
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Set core body defaults */
+body {
+  @include full-size;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  background: #ffffff;
+  padding: 0 3rem;
+  @media (max-width: 428px) {
+  padding: 0 1.25rem;
+  }
+}
+
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+a{
+  color:inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
