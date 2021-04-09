@@ -1,0 +1,33 @@
+.search-zone {
+  background: #e7e7e7;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  input {
+    font-weight: 400;
+    font-size: 1.125rem;
+    flex-grow: 1;
+    height: 4.3125rem;
+    border: none;
+    outline: none;
+    background: $colog-grey;
+    font-size: 1.125rem;
+    border-radius: 0.25rem;
+    padding-left: 1.5rem;
+    max-width: 1186px;
+    text-overflow: ellipsis;
+    &::placeholder {
+      color: #000000;
+      opacity: 0.25;
+    }
+  }
+
+  i {
+    font-size: 32px;
+    background: $colog-grey;
+    padding-right: 1rem;
+    text-overflow: ellipsis;
+  }
+}

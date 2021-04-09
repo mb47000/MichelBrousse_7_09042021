@@ -1,0 +1,24 @@
+@each $name, $color in $button-color {
+    .filter-button-#{$name} {
+        display: flex;
+        align-items: center;
+        color: white;
+        background: $color;
+        justify-content: space-between;
+        border: none;
+        min-width: 170px;
+        height: 69px;
+        border-radius: 5px;
+        padding: 19px;
+        font-family: "Lato", sans-serif;
+        font-weight: 700;
+        font-size: 1.125rem;
+        margin-right: 20px;
+        &:focus {
+            outline: none;
+        }
+        &:hover {
+            background: darken($color, 10%);
+        }
+    }
+  }
