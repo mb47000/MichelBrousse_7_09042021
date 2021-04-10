@@ -1,18 +1,37 @@
 class Dropdown {
+  
+  /**
+   *  DOM element <button> for modal opening
+   * @type {HTMLElement}
+   */
+  button;
+
+  /**
+   *  DOM element <div> who contains the input filter for the tags and the list of tags
+   * @type {HTMLElement}
+   */
+  dropdown;
+
   /**
    * [constructor description]
    *
    * @param   {HTMLElement}  domTarget  [domTarget description]
    * @param   {String}  title       [title description]
-   * @param   {String}  color       [color of the dropdown]
+   * @param   {String}  color       [color theme of the dropdown]
    * @constructor
    */
-  constructor(domTarget, title, color) {
+  constructor(domTarget, title, color, tags) {
     this.createOpenButton(title, color);
-    this.createDropdown(title, color);
+    this.createDropdown(title, color, tags);
     this.render(domTarget, this.fullDropdown());
   }
 
+  /**
+   * [fullDropdown description]
+   *
+   * @return  {HTMLElement}  [return description]
+   * 
+   */
   fullDropdown = () => {
     let component = document.createElement("div");
     component.appendChild(this.button);
@@ -27,29 +46,64 @@ class Dropdown {
     this.button.onclick = () => this.openDropdown();
   };
 
-  createDropdown = (title, color) => {
+  createTagList = (tags) => {
+    tags.forEach(tag => {
+      let tagElement = document.createElement("li");
+      tagElement.innerHTML = tag;
+      this.dropdownList.appendChild(tagElement);
+    });
+  }
+
+  dropdownSize = (tagsList) => {
+    let dropdownSize = {}
+    dropdownSize.colSize = tagsList.size <= 10 ? 1 : tagsList.size <= 20 ? 2 : tagsList.size <= 30 ? 3 : 4;
+    dropdownSize.height = tagsList.size > 40 ? `${Math.ceil(tagsList.size / 4) * 34}px` : '350px';
+    this.dropdownList.style.maxHeight = dropdownSize.height;
+    return dropdownSize;
+  }
+
+  createDropdown = (title, color, tags) => {
+    this.dropdown = document.createElement("div");
+    this.dropdown.className = `dropdown dropdown-${color}`;
+    
+    this.dropdownList = document.createElement("ul");
+    this.createTagList(tags);
+    
+    let dropdownSize = this.dropdownSize(tags);
+    this.dropdownList.className = `dropdown-list col-${dropdownSize.colSize}`;
+
     const closeDropdownButton = document.createElement("i");
     closeDropdownButton.className = "fas fa-chevron-up";
     closeDropdownButton.onclick = () => this.closeDropdown();
 
+    /**
+     * TODO : Refactor like dropdownList => this.dropdown... and add colSize modification in dropdownSize method
+     */
     const dropdownInputContainer = document.createElement("div");
-    dropdownInputContainer.className = "dropdown-search col-3";
+    dropdownInputContainer.className = `dropdown-search col-${dropdownSize.colSize}`;
     dropdownInputContainer.innerHTML = `<input type="text" placeholder="${title}" />`;
     dropdownInputContainer.appendChild(closeDropdownButton);
 
-    const dropdownList = document.createElement("ul");
-    dropdownList.className = "dropdown-list col-3";
-    dropdownList.innerHTML = `<li>Ail</li> <li>Ananas</li><li>Banane</li><li>Basilic</li><li>Beurre</li><li>Beurre fondu</li><li>Beurre salé</li><li>Bicarbonate</li><li>Blanc de dinde</li><li>Boudoirs</li><li>Carotte</li><li>Champignons de paris</li><li>Chocolat</li><li>Chocolat au lait</li><li>Chocolat noir</li><li>Chocolat noir en pepites</li><li>Citron</li><li>Citron Vert</li><li>Concombre</li><li>Coulis de tomates</li><li>Courgette</li><li>Crème de coco</li><li>Crème fraîche</li><li>Crème liquide</li>`;
-
-    this.dropdown = document.createElement("div");
-    this.dropdown.className = `dropdown dropdown-${color}`;
     this.dropdown.appendChild(dropdownInputContainer);
-    this.dropdown.append(dropdownList);
+    this.dropdown.append(this.dropdownList);
   };
 
-  dropdownSearch() {}
-
   openDropdown = () => {
+    let dropdownList = document.querySelectorAll(".dropdown");
+    let buttonList = document.querySelectorAll("[class^=filter-button]");
+
+    buttonList.forEach((button) => {
+      if (button !== this.button) {
+        button.style.display = "flex";
+      }
+    });
+
+    dropdownList.forEach((dropdown) => {
+      if (dropdown !== this.dropdown) {
+        dropdown.style.display = "none";
+      }
+    });
+
     this.button.style.display = "none";
     this.dropdown.style.display = "block";
   };
