@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <link rel="icon" href="favicon.ico" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
@@ -43,7 +43,7 @@
         <i class="fas fa-search"></i>
       </section>
       <section>
-        <div class="filter-container">
+        <div class="filter-container-tag">
           <button class="filter-tag-blue">
             Coco <i class="far fa-times-circle"></i>
           </button>
@@ -54,49 +54,7 @@
             Cuillère à soupe <i class="far fa-times-circle"></i>
           </button>
         </div>
-        <div class="filter-container">
-          <button class="filter-button-blue" onclick="openDropdown()">
-            Ingredients <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown">
-            <div class="dropdown-search col-3">
-              <input type="text" placeholder="Ingredients" />
-              <i class="fas fa-chevron-up"></i>
-            </div>
-            <ul class="dropdown-list col-3">
-              <li>Ail</li>
-              <li>Ananas</li>
-              <li>Banane</li>
-              <li>Basilic</li>
-              <li>Beurre</li>
-              <li>Beurre fondu</li>
-              <li>Beurre salé</li>
-              <li>Bicarbonate</li>
-              <li>Blanc de dinde</li>
-              <li>Boudoirs</li>
-              <li>Carotte</li>
-              <li>Champignons de paris</li>
-              <li>Chocolat</li>
-              <li>Chocolat au lait</li>
-              <li>Chocolat noir</li>
-              <li>Chocolat noir en pepites</li>
-              <li>Citron</li>
-              <li>Citron Vert</li>
-              <li>Concombre</li>
-              <li>Coulis de tomates</li>
-              <li>Courgette</li>
-              <li>Crème de coco</li>
-              <li>Crème fraîche</li>
-              <li>Crème liquide</li>
-            </ul>
-          </div>
-          <button class="filter-button-green">
-            Appareil <i class="fas fa-chevron-down"></i>
-          </button>
-          <button class="filter-button-red">
-            Ustensiles <i class="fas fa-chevron-down"></i>
-          </button>
-        </div>
+        <div class="filter-container"></div>
       </section>
       <section class="cards-container">
         <article class="card">
@@ -129,17 +87,7 @@
       integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
       crossorigin="anonymous"
     ></script>
-    <script>
-      function openDropdown() {
-        document.querySelector('.filter-button-blue').style.display = "none";
-        document.querySelector('.dropdown').style.display = "block";
-      }
-
-      document.querySelector('.fa-chevron-up').addEventListener("click", ()=> {
-        document.querySelector('.filter-button-blue').style.display = "flex";
-        document.querySelector('.dropdown').style.display = "none";
-      })
-    </script>
-    <!-- <script type="module" src="js/index.js" defer></script> -->
+    <script src="./dist/polyfill.bundle.js" defer></script>
+    <script src="./dist/app.bundle.js" defer></script>
   </body>
 </html>
