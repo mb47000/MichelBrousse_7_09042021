@@ -224,17 +224,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var Dropdown = /*#__PURE__*/function () {
   /**
+   *  DOM element <button> for modal opening
+   * @type {HTMLElement}
+   */
+
+  /**
+   *  DOM element <div> who contains the input filter for the tags and the list of tags
+   * @type {HTMLElement}
+   */
+
+  /**
    * [constructor description]
    *
    * @param   {HTMLElement}  domTarget  [domTarget description]
    * @param   {String}  title       [title description]
-   * @param   {String}  color       [color of the dropdown]
+   * @param   {String}  color       [color theme of the dropdown]
    * @constructor
    */
-  function Dropdown(domTarget, _title, _color) {
+  function Dropdown(domTarget, _title, _color, _tags) {
     var _this = this;
 
     _classCallCheck(this, Dropdown);
+
+    _defineProperty(this, "button", void 0);
+
+    _defineProperty(this, "dropdown", void 0);
 
     _defineProperty(this, "fullDropdown", function () {
       var component = document.createElement("div");
@@ -253,30 +267,67 @@ var Dropdown = /*#__PURE__*/function () {
       };
     });
 
-    _defineProperty(this, "createDropdown", function (title, color) {
+    _defineProperty(this, "createTagList", function (tags) {
+      tags.forEach(function (tag) {
+        var tagElement = document.createElement("li");
+        tagElement.innerHTML = tag;
+
+        _this.dropdownList.appendChild(tagElement);
+      });
+    });
+
+    _defineProperty(this, "dropdownSize", function (tagsList) {
+      var dropdownSize = {};
+      dropdownSize.colSize = tagsList.size <= 10 ? 1 : tagsList.size <= 20 ? 2 : tagsList.size <= 30 ? 3 : 4;
+      dropdownSize.height = tagsList.size > 40 ? "".concat(Math.ceil(tagsList.size / 4) * 34, "px") : '350px';
+      _this.dropdownList.style.maxHeight = dropdownSize.height;
+      return dropdownSize;
+    });
+
+    _defineProperty(this, "createDropdown", function (title, color, tags) {
+      _this.dropdown = document.createElement("div");
+      _this.dropdown.className = "dropdown dropdown-".concat(color);
+      _this.dropdownList = document.createElement("ul");
+
+      _this.createTagList(tags);
+
+      var dropdownSize = _this.dropdownSize(tags);
+
+      _this.dropdownList.className = "dropdown-list col-".concat(dropdownSize.colSize);
       var closeDropdownButton = document.createElement("i");
       closeDropdownButton.className = "fas fa-chevron-up";
 
       closeDropdownButton.onclick = function () {
         return _this.closeDropdown();
       };
+      /**
+       * TODO : Refactor like dropdownList => this.dropdown... and add colSize modification in dropdownSize method
+       */
+
 
       var dropdownInputContainer = document.createElement("div");
-      dropdownInputContainer.className = "dropdown-search col-3";
+      dropdownInputContainer.className = "dropdown-search col-".concat(dropdownSize.colSize);
       dropdownInputContainer.innerHTML = "<input type=\"text\" placeholder=\"".concat(title, "\" />");
       dropdownInputContainer.appendChild(closeDropdownButton);
-      var dropdownList = document.createElement("ul");
-      dropdownList.className = "dropdown-list col-3";
-      dropdownList.innerHTML = "<li>Ail</li> <li>Ananas</li><li>Banane</li><li>Basilic</li><li>Beurre</li><li>Beurre fondu</li><li>Beurre sal\xE9</li><li>Bicarbonate</li><li>Blanc de dinde</li><li>Boudoirs</li><li>Carotte</li><li>Champignons de paris</li><li>Chocolat</li><li>Chocolat au lait</li><li>Chocolat noir</li><li>Chocolat noir en pepites</li><li>Citron</li><li>Citron Vert</li><li>Concombre</li><li>Coulis de tomates</li><li>Courgette</li><li>Cr\xE8me de coco</li><li>Cr\xE8me fra\xEEche</li><li>Cr\xE8me liquide</li>";
-      _this.dropdown = document.createElement("div");
-      _this.dropdown.className = "dropdown dropdown-".concat(color);
 
       _this.dropdown.appendChild(dropdownInputContainer);
 
-      _this.dropdown.append(dropdownList);
+      _this.dropdown.append(_this.dropdownList);
     });
 
     _defineProperty(this, "openDropdown", function () {
+      var dropdownList = document.querySelectorAll(".dropdown");
+      var buttonList = document.querySelectorAll("[class^=filter-button]");
+      buttonList.forEach(function (button) {
+        if (button !== _this.button) {
+          button.style.display = "flex";
+        }
+      });
+      dropdownList.forEach(function (dropdown) {
+        if (dropdown !== _this.dropdown) {
+          dropdown.style.display = "none";
+        }
+      });
       _this.button.style.display = "none";
       _this.dropdown.style.display = "block";
     });
@@ -287,14 +338,18 @@ var Dropdown = /*#__PURE__*/function () {
     });
 
     this.createOpenButton(_title, _color);
-    this.createDropdown(_title, _color);
+    this.createDropdown(_title, _color, _tags);
     this.render(domTarget, this.fullDropdown());
   }
+  /**
+   * [fullDropdown description]
+   *
+   * @return  {HTMLElement}  [return description]
+   * 
+   */
+
 
   _createClass(Dropdown, [{
-    key: "dropdownSearch",
-    value: function dropdownSearch() {}
-  }, {
     key: "render",
     value: function render(domTarget, component) {
       document.querySelector(domTarget).appendChild(component);
@@ -11241,12 +11296,80 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_recipes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data/recipes.js */ "./src/data/recipes.js");
 /* harmony import */ var _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Dropdown.js */ "./src/components/Dropdown.js");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+var appliances = new Set();
+_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default.map(function (recipe) {
+  appliances.add(recipe.appliance.replace(/\./g, ""));
+});
+var ustensils = new Set();
+
+var _iterator = _createForOfIteratorHelper(_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default),
+    _step;
+
+try {
+  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+    var recipe = _step.value;
+
+    var _iterator3 = _createForOfIteratorHelper(recipe.ustensils),
+        _step3;
+
+    try {
+      for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+        var ustensil = _step3.value;
+        ustensils.add(ustensil);
+      }
+    } catch (err) {
+      _iterator3.e(err);
+    } finally {
+      _iterator3.f();
+    }
+  }
+} catch (err) {
+  _iterator.e(err);
+} finally {
+  _iterator.f();
+}
+
+var ingredients = new Set();
+
+var _iterator2 = _createForOfIteratorHelper(_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default),
+    _step2;
+
+try {
+  for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+    var _recipe = _step2.value;
+
+    var _iterator4 = _createForOfIteratorHelper(_recipe.ingredients),
+        _step4;
+
+    try {
+      for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+        var ingredient = _step4.value;
+        ingredients.add(ingredient.ingredient);
+      }
+    } catch (err) {
+      _iterator4.e(err);
+    } finally {
+      _iterator4.f();
+    }
+  }
+} catch (err) {
+  _iterator2.e(err);
+} finally {
+  _iterator2.f();
+}
 
 var dropdown = {
-  blue: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Ingredients", "blue"),
-  green: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Appareil", "green"),
-  red: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Ustensiles", "red")
+  blue: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Ingredients", "blue", ingredients),
+  green: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Appareil", "green", appliances),
+  red: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Ustensiles", "red", ustensils)
 };
 })();
 
