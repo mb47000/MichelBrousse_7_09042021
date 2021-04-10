@@ -118,7 +118,7 @@ header {
   flex-wrap: wrap;
   justify-content: space-between; }
 
-.filter-container {
+.filter-container, .filter-container-tag {
   display: flex;
   margin-bottom: 15px; }
 
@@ -333,8 +333,7 @@ header {
     border-radius: 0.25rem 0.25rem 0 0;
     display: flex;
     align-items: center;
-    flex-wrap: nowrap;
-    background: #3282f7; }
+    flex-wrap: nowrap; }
     .dropdown-search input {
       font-weight: bold;
       height: 100%;
@@ -342,7 +341,6 @@ header {
       width: 100%;
       border: none;
       outline: none;
-      background: #3282f7;
       font-size: 1.125rem;
       border-radius: 0.25rem 0.25rem 0 0;
       padding-left: 19px;
@@ -360,8 +358,6 @@ header {
       display: flex;
       align-items: center;
       border-radius: 0 0.25rem 0.25rem 0; }
-      .dropdown-search i:hover {
-        background: #0966ed; }
   .dropdown-list {
     display: flex;
     flex-direction: column;
@@ -369,7 +365,6 @@ header {
     flex-wrap: wrap;
     padding: 0 0 10px 0;
     max-height: 300px;
-    background: #3282f7;
     line-height: 0.9rem;
     margin: 0;
     border-radius: 0 0 0.25rem 0.25rem; }
@@ -385,7 +380,38 @@ header {
       font-family: "Lato", sans-serif;
       font-weight: 400;
       cursor: pointer; }
-      .dropdown-list li:hover {
-        background: #0966ed; }
+
+.dropdown-blue .dropdown-search {
+  background: #3282f7; }
+  .dropdown-blue .dropdown-search input {
+    background: #3282f7; }
+  .dropdown-blue .dropdown-search i:hover {
+    background: #0966ed; }
+.dropdown-blue .dropdown-list {
+  background: #3282f7; }
+  .dropdown-blue .dropdown-list li:hover {
+    background: #0966ed; }
+
+.dropdown-green .dropdown-search {
+  background: #68d9a4; }
+  .dropdown-green .dropdown-search input {
+    background: #68d9a4; }
+  .dropdown-green .dropdown-search i:hover {
+    background: #3fcf8b; }
+.dropdown-green .dropdown-list {
+  background: #68d9a4; }
+  .dropdown-green .dropdown-list li:hover {
+    background: #3fcf8b; }
+
+.dropdown-red .dropdown-search {
+  background: #ed6454; }
+  .dropdown-red .dropdown-search input {
+    background: #ed6454; }
+  .dropdown-red .dropdown-search i:hover {
+    background: #e83a26; }
+.dropdown-red .dropdown-list {
+  background: #ed6454; }
+  .dropdown-red .dropdown-list li:hover {
+    background: #e83a26; }
 
 /*# sourceMappingURL=style.css.map */

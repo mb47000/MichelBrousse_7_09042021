@@ -7,7 +7,6 @@
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    background: $color-blue;
 
     input {
       font-weight: bold;
@@ -16,7 +15,6 @@
       width: 100%;
       border: none;
       outline: none;
-      background: $color-blue;
       font-size: 1.125rem;
       border-radius: 0.25rem 0.25rem 0 0;
       padding-left: 19px;
@@ -37,20 +35,16 @@
       display: flex;
       align-items: center;
       border-radius: 0 0.25rem 0.25rem 0;
-      &:hover {
-        background: darken($color-blue, 10%);
-      }
     }
   }
 
-    &-list {
+  &-list {
     display: flex;
     flex-direction: column;
     position: absolute;
     flex-wrap: wrap;
     padding: 0 0 10px 0;
     max-height: 300px;
-    background: $color-blue;
     line-height: 0.9rem;
     margin: 0;
     border-radius: 0 0 0.25rem 0.25rem;
@@ -66,8 +60,78 @@
       font-family: "Lato", sans-serif;
       font-weight: 400;
       cursor: pointer;
+    }
+  }
+
+}
+
+.dropdown-blue {
+  .dropdown-search {
+    background: $color-blue;
+
+    input {
+      background: $color-blue;
+    }
+
+    i {
       &:hover {
         background: darken($color-blue, 10%);
+      }
+    }
+  }
+  .dropdown-list {
+    background: $color-blue;
+    li {
+      &:hover {
+        background: darken($color-blue, 10%);
+      }
+    }
+  }
+}
+
+.dropdown-green {
+  .dropdown-search {
+    background: $color-green;
+
+    input {
+      background: $color-green;
+    }
+
+    i {
+      &:hover {
+        background: darken($color-green, 10%);
+      }
+    }
+  }
+  .dropdown-list {
+    background: $color-green;
+    li {
+      &:hover {
+        background: darken($color-green, 10%);
+      }
+    }
+  }
+}
+
+.dropdown-red {
+  .dropdown-search {
+    background: $color-red;
+
+    input {
+      background: $color-red;
+    }
+
+    i {
+      &:hover {
+        background: darken($color-red, 10%);
+      }
+    }
+  }
+  .dropdown-list {
+    background: $color-red;
+    li {
+      &:hover {
+        background: darken($color-red, 10%);
       }
     }
   }
