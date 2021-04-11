@@ -214,6 +214,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+<<<<<<< HEAD
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -226,6 +227,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+=======
+>>>>>>> main
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -236,16 +239,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var Dropdown = /*#__PURE__*/function () {
   /**
+<<<<<<< HEAD
    * DOM element <button> for modal opening
+=======
+   *  DOM element <button> for modal opening
+>>>>>>> main
    * @type {HTMLElement}
    */
 
   /**
+<<<<<<< HEAD
    * DOM element <div> who contains the input filter for the tags and the list <ul> of tags
+=======
+   *  DOM element <div> who contains the input filter for the tags and the list of tags
+>>>>>>> main
    * @type {HTMLElement}
    */
 
   /**
+<<<<<<< HEAD
    * [CustomEvent description]
    *
    * @param   {[type]}  tagFilterChange  [tagFilterChange description]
@@ -258,6 +270,13 @@ var Dropdown = /*#__PURE__*/function () {
    * @param   {HTMLElement}  domTarget  Dom element to inject
    * @param   {String}  title       title of dropdown, use for button innerHTML and input placeholder
    * @param   {String}  color       color theme of the dropdown avaible (blue, green or red) in scss component/_dropdown.scss
+=======
+   * [constructor description]
+   *
+   * @param   {HTMLElement}  domTarget  [domTarget description]
+   * @param   {String}  title       [title description]
+   * @param   {String}  color       [color theme of the dropdown]
+>>>>>>> main
    * @constructor
    */
   function Dropdown(domTarget, _title, _color, _tags) {
@@ -269,6 +288,7 @@ var Dropdown = /*#__PURE__*/function () {
 
     _defineProperty(this, "dropdown", void 0);
 
+<<<<<<< HEAD
     _defineProperty(this, "inputChangeEvent", new CustomEvent("onTagFilterChange", {
       detail: {
         dropdown: {
@@ -278,6 +298,8 @@ var Dropdown = /*#__PURE__*/function () {
       }
     }));
 
+=======
+>>>>>>> main
     _defineProperty(this, "fullDropdown", function () {
       var component = document.createElement("div");
       component.appendChild(_this.button);
@@ -285,6 +307,7 @@ var Dropdown = /*#__PURE__*/function () {
       return component;
     });
 
+<<<<<<< HEAD
     _defineProperty(this, "dropdownSize", function (tagsList) {
       var copyTagList = _toConsumableArray(tagsList);
 
@@ -295,6 +318,8 @@ var Dropdown = /*#__PURE__*/function () {
       _this.dropdownInputContainer.className = "dropdown-search col-".concat(colSize);
     });
 
+=======
+>>>>>>> main
     _defineProperty(this, "createOpenButton", function (title, color) {
       _this.button = document.createElement("button");
       _this.button.className = "filter-button-".concat(color);
@@ -306,7 +331,10 @@ var Dropdown = /*#__PURE__*/function () {
     });
 
     _defineProperty(this, "createTagList", function (tags) {
+<<<<<<< HEAD
       if (_this.dropdownList.innerHTML !== '') _this.dropdownList.innerHTML = '';
+=======
+>>>>>>> main
       tags.forEach(function (tag) {
         var tagElement = document.createElement("li");
         tagElement.innerHTML = tag;
@@ -315,6 +343,17 @@ var Dropdown = /*#__PURE__*/function () {
       });
     });
 
+<<<<<<< HEAD
+=======
+    _defineProperty(this, "dropdownSize", function (tagsList) {
+      var dropdownSize = {};
+      dropdownSize.colSize = tagsList.size <= 10 ? 1 : tagsList.size <= 20 ? 2 : tagsList.size <= 30 ? 3 : 4;
+      dropdownSize.height = tagsList.size > 40 ? "".concat(Math.ceil(tagsList.size / 4) * 34, "px") : '350px';
+      _this.dropdownList.style.maxHeight = dropdownSize.height;
+      return dropdownSize;
+    });
+
+>>>>>>> main
     _defineProperty(this, "createDropdown", function (title, color, tags) {
       _this.dropdown = document.createElement("div");
       _this.dropdown.className = "dropdown dropdown-".concat(color);
@@ -322,12 +361,19 @@ var Dropdown = /*#__PURE__*/function () {
 
       _this.createTagList(tags);
 
+<<<<<<< HEAD
+=======
+      var dropdownSize = _this.dropdownSize(tags);
+
+      _this.dropdownList.className = "dropdown-list col-".concat(dropdownSize.colSize);
+>>>>>>> main
       var closeDropdownButton = document.createElement("i");
       closeDropdownButton.className = "fas fa-chevron-up";
 
       closeDropdownButton.onclick = function () {
         return _this.closeDropdown();
       };
+<<<<<<< HEAD
 
       _this.dropdownInputContainer = document.createElement("div");
       _this.inputSearch = document.createElement("input");
@@ -346,6 +392,19 @@ var Dropdown = /*#__PURE__*/function () {
       _this.dropdownSize(tags);
 
       _this.dropdown.appendChild(_this.dropdownInputContainer);
+=======
+      /**
+       * TODO : Refactor like dropdownList => this.dropdown... and add colSize modification in dropdownSize method
+       */
+
+
+      var dropdownInputContainer = document.createElement("div");
+      dropdownInputContainer.className = "dropdown-search col-".concat(dropdownSize.colSize);
+      dropdownInputContainer.innerHTML = "<input type=\"text\" placeholder=\"".concat(title, "\" />");
+      dropdownInputContainer.appendChild(closeDropdownButton);
+
+      _this.dropdown.appendChild(dropdownInputContainer);
+>>>>>>> main
 
       _this.dropdown.append(_this.dropdownList);
     });
@@ -372,6 +431,7 @@ var Dropdown = /*#__PURE__*/function () {
       _this.dropdown.style.display = "none";
     });
 
+<<<<<<< HEAD
     _defineProperty(this, "updateTagList", function (tags) {
       _this.createTagList(tags);
 
@@ -383,12 +443,21 @@ var Dropdown = /*#__PURE__*/function () {
     this.render(domTarget, this.fullDropdown());
     this.inputChangeEvent.detail.dropdown.color = _color;
     this.inputChangeEvent.detail.dropdown.data = _title;
+=======
+    this.createOpenButton(_title, _color);
+    this.createDropdown(_title, _color, _tags);
+    this.render(domTarget, this.fullDropdown());
+>>>>>>> main
   }
   /**
    * [fullDropdown description]
    *
    * @return  {HTMLElement}  [return description]
+<<<<<<< HEAD
    *
+=======
+   * 
+>>>>>>> main
    */
 
 
@@ -11339,6 +11408,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_recipes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data/recipes.js */ "./src/data/recipes.js");
 /* harmony import */ var _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Dropdown.js */ "./src/components/Dropdown.js");
+<<<<<<< HEAD
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -11347,6 +11417,8 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.it
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
+=======
+>>>>>>> main
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -11355,12 +11427,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+<<<<<<< HEAD
 var data = {};
 data.appareil = new Set();
 _data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default.map(function (recipe) {
   data.appareil.add(recipe.appliance.replace(/\./g, ""));
 });
 data.ustensiles = new Set();
+=======
+var appliances = new Set();
+_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default.map(function (recipe) {
+  appliances.add(recipe.appliance.replace(/\./g, ""));
+});
+var ustensils = new Set();
+>>>>>>> main
 
 var _iterator = _createForOfIteratorHelper(_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default),
     _step;
@@ -11375,7 +11455,11 @@ try {
     try {
       for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
         var ustensil = _step3.value;
+<<<<<<< HEAD
         data.ustensiles.add(ustensil);
+=======
+        ustensils.add(ustensil);
+>>>>>>> main
       }
     } catch (err) {
       _iterator3.e(err);
@@ -11389,7 +11473,11 @@ try {
   _iterator.f();
 }
 
+<<<<<<< HEAD
 data.ingredients = new Set();
+=======
+var ingredients = new Set();
+>>>>>>> main
 
 var _iterator2 = _createForOfIteratorHelper(_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default),
     _step2;
@@ -11404,7 +11492,11 @@ try {
     try {
       for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
         var ingredient = _step4.value;
+<<<<<<< HEAD
         data.ingredients.add(ingredient.ingredient);
+=======
+        ingredients.add(ingredient.ingredient);
+>>>>>>> main
       }
     } catch (err) {
       _iterator4.e(err);
@@ -11418,6 +11510,7 @@ try {
   _iterator2.f();
 }
 
+<<<<<<< HEAD
 var filterTag = function filterTag(data, filter) {
   return _toConsumableArray(data).filter(function (tag) {
     return tag.toLowerCase().indexOf(filter) === 0;
@@ -11434,6 +11527,13 @@ document.addEventListener("onTagFilterChange", function (event) {
   var tags = filterTag(data[targetDropdown.data.toLowerCase()], event.target.value.toLowerCase());
   dropdown[targetDropdown.color].updateTagList(tags);
 }, true);
+=======
+var dropdown = {
+  blue: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Ingredients", "blue", ingredients),
+  green: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Appareil", "green", appliances),
+  red: new _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__.default(".filter-container", "Ustensiles", "red", ustensils)
+};
+>>>>>>> main
 })();
 
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
