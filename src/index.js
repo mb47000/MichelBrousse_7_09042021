@@ -1,29 +1,55 @@
 import recipes from "./data/recipes.js";
 import Dropdown from "./components/Dropdown.js";
 
-const appliances = new Set();
+const data = {};
+
+data.appareil = new Set();
 recipes.map((recipe) => {
-  appliances.add(recipe.appliance.replace(/\./g, ""));
+  data.appareil.add(recipe.appliance.replace(/\./g, ""));
 });
 
-const ustensils = new Set();
+data.ustensiles = new Set();
 for (let recipe of recipes) {
   for (let ustensil of recipe.ustensils) {
-    ustensils.add(ustensil);
+    data.ustensiles.add(ustensil);
   }
 }
 
-const ingredients = new Set();
+data.ingredients = new Set();
 for (let recipe of recipes) {
   for (let ingredient of recipe.ingredients) {
-    ingredients.add(
-      ingredient.ingredient
-    );
+    data.ingredients.add(ingredient.ingredient);
   }
 }
 
-const dropdown = {
-  blue: new Dropdown(".filter-container", "Ingredients", "blue", ingredients),
-  green: new Dropdown(".filter-container", "Appareil", "green", appliances),
-  red: new Dropdown(".filter-container", "Ustensiles", "red", ustensils),
+const filterTag = (data, filter) => {
+  return [...data].filter((tag) => {
+    return tag.toLowerCase().indexOf(filter) === 0;
+  });
 };
+
+const dropdown = {
+  blue: new Dropdown(
+    ".filter-container",
+    "Ingredients",
+    "blue",
+    data.ingredients
+  ),
+  green: new Dropdown(".filter-container", "Appareil", "green", data.appareil),
+  red: new Dropdown(".filter-container", "Ustensiles", "red", data.ustensiles),
+};
+
+document.addEventListener(
+  "onTagFilterChange",
+  (event) => {
+    let targetDropdown = event.detail.dropdown;
+
+    const tags = filterTag(
+      data[targetDropdown.data.toLowerCase()],
+      event.target.value.toLowerCase()
+    );
+    
+    dropdown[targetDropdown.color].updateTagList(tags);
+  },
+  true
+);
