@@ -214,6 +214,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _Tag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tag.js */ "./src/components/Tag.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -233,6 +234,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 var Dropdown = /*#__PURE__*/function () {
   /**
@@ -309,6 +312,16 @@ var Dropdown = /*#__PURE__*/function () {
       if (_this.dropdownList.innerHTML !== '') _this.dropdownList.innerHTML = '';
       tags.forEach(function (tag) {
         var tagElement = document.createElement("li");
+
+        tagElement.onclick = function (event) {
+          var tagListContainer = document.querySelector('.filter-container-tag');
+
+          if (!_Tag_js__WEBPACK_IMPORTED_MODULE_0__.default.tagExists(event.target.innerHTML)) {
+            var newTag = new _Tag_js__WEBPACK_IMPORTED_MODULE_0__.default(_this.color, event.target.innerHTML);
+            tagListContainer.appendChild(newTag.buttonTag);
+          }
+        };
+
         tagElement.innerHTML = tag;
 
         _this.dropdownList.appendChild(tagElement);
@@ -383,6 +396,7 @@ var Dropdown = /*#__PURE__*/function () {
     this.render(domTarget, this.fullDropdown());
     this.inputChangeEvent.detail.dropdown.color = _color;
     this.inputChangeEvent.detail.dropdown.data = _title;
+    this.color = _color;
   }
   /**
    * [fullDropdown description]
@@ -403,6 +417,61 @@ var Dropdown = /*#__PURE__*/function () {
 }();
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dropdown);
+
+/***/ }),
+
+/***/ "./src/components/Tag.js":
+/*!*******************************!*\
+  !*** ./src/components/Tag.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Tag =
+/**
+ * DOM element <button> for modal opening
+ * @type {HTMLElement}
+ */
+function Tag(_color, _name) {
+  var _this = this;
+
+  _classCallCheck(this, Tag);
+
+  _defineProperty(this, "buttonTag", void 0);
+
+  _defineProperty(this, "createButtonTag", function (color, name) {
+    _this.buttonTag = document.createElement("button");
+    _this.buttonTag.className = "filter-tag-".concat(color);
+    _this.buttonTag.innerHTML = "<span>".concat(name, "</span> <i class=\"far fa-times-circle\"></i>");
+
+    _this.buttonTag.onclick = function () {
+      _this.buttonTag.remove();
+    };
+  });
+
+  this.createButtonTag(_color, _name);
+};
+
+_defineProperty(Tag, "tagExists", function (currentTag) {
+  var tagsList = document.querySelectorAll("[class^=filter-tag]");
+  var isTagExists = false;
+  tagsList.forEach(function (tag) {
+    if (tag.children[0].innerHTML == currentTag) {
+      isTagExists = true;
+    }
+  });
+  return isTagExists;
+});
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tag);
 
 /***/ }),
 
@@ -11420,7 +11489,7 @@ try {
 
 var filterTag = function filterTag(data, filter) {
   return _toConsumableArray(data).filter(function (tag) {
-    return tag.toLowerCase().indexOf(filter) === 0;
+    return tag.toLowerCase().indexOf(filter) >= 0;
   });
 };
 

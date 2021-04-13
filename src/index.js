@@ -24,7 +24,7 @@ for (let recipe of recipes) {
 
 const filterTag = (data, filter) => {
   return [...data].filter((tag) => {
-    return tag.toLowerCase().indexOf(filter) === 0;
+    return tag.toLowerCase().indexOf(filter) >= 0;
   });
 };
 

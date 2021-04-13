@@ -1,3 +1,5 @@
+import Tag from "./Tag.js"
+
 class Dropdown {
   /**
    * DOM element <button> for modal opening
@@ -35,6 +37,7 @@ class Dropdown {
     this.render(domTarget, this.fullDropdown());
     this.inputChangeEvent.detail.dropdown.color = color;
     this.inputChangeEvent.detail.dropdown.data = title;
+    this.color = color;
   }
 
   /**
@@ -89,6 +92,13 @@ class Dropdown {
 
     tags.forEach((tag) => {
       let tagElement = document.createElement("li");
+      tagElement.onclick = (event) => {
+        let tagListContainer = document.querySelector('.filter-container-tag');
+        if (!Tag.tagExists(event.target.innerHTML)) {
+          let newTag = new Tag(this.color, event.target.innerHTML);
+          tagListContainer.appendChild(newTag.buttonTag);
+        } 
+      }
       tagElement.innerHTML = tag;
       this.dropdownList.appendChild(tagElement);
     });
