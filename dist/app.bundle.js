@@ -203,6 +203,79 @@ module.exports = function () {
 
 /***/ }),
 
+/***/ "./src/class/RecipesManager.js":
+/*!*************************************!*\
+  !*** ./src/class/RecipesManager.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _entity_Recipe_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../entity/Recipe.js */ "./src/entity/Recipe.js");
+/* harmony import */ var _components_RecipeCard_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/RecipeCard.js */ "./src/components/RecipeCard.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+
+
+
+var _recipesEntities = new WeakMap();
+
+var RecipesManager = /*#__PURE__*/function () {
+  function RecipesManager(recipesList) {
+    _classCallCheck(this, RecipesManager);
+
+    _recipesEntities.set(this, {
+      writable: true,
+      value: []
+    });
+
+    this.setRecipesEntities(recipesList);
+    this.renderRecipes(this.getRecipesEntities());
+  }
+
+  _createClass(RecipesManager, [{
+    key: "setRecipesEntities",
+    value: function setRecipesEntities(recipesList) {
+      var _this = this;
+
+      recipesList.forEach(function (recipe) {
+        _classPrivateFieldGet(_this, _recipesEntities).push(new _entity_Recipe_js__WEBPACK_IMPORTED_MODULE_0__.default(recipe));
+      });
+    }
+  }, {
+    key: "getRecipesEntities",
+    value: function getRecipesEntities() {
+      return _classPrivateFieldGet(this, _recipesEntities);
+    }
+  }, {
+    key: "renderRecipes",
+    value: function renderRecipes(recipesList) {
+      recipesList.forEach(function (recipe) {
+        (0,_components_RecipeCard_js__WEBPACK_IMPORTED_MODULE_1__.default)(recipe);
+      });
+    }
+  }]);
+
+  return RecipesManager;
+}();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RecipesManager);
+
+/***/ }),
+
 /***/ "./src/components/Dropdown.js":
 /*!************************************!*\
   !*** ./src/components/Dropdown.js ***!
@@ -417,6 +490,29 @@ var Dropdown = /*#__PURE__*/function () {
 }();
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dropdown);
+
+/***/ }),
+
+/***/ "./src/components/RecipeCard.js":
+/*!**************************************!*\
+  !*** ./src/components/RecipeCard.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var RecipeCard = function RecipeCard(recipe) {
+  var recipeCard = document.createElement("article");
+  recipeCard.className = "card";
+  var ingredientsList = recipe.getIngredients();
+  recipeCard.innerHTML = "\n    <img src=\"dist/img/placeholder.png\" alt=\"...\" />\n    <div class=\"card-body\">\n      <div class=\"card-body-top\">\n        <h2 class=\"title\">".concat(recipe.getName(), "</h2>\n        <span><i class=\"far fa-clock\"></i> ").concat(recipe.getTime(), " min</span>\n      </div>\n      <div class=\"card-body-bottom\">\n        <ul>\n          <li><span>Lait de coco:</span> 400ml</li>\n          <li><span>Jus de citron:</span> 2</li>\n          <li><span>Cr\xE9me de coco:</span> 4 cuill\xE8res</li>\n          <li><span>Sucre:</span> 20g</li>\n          <li><span>Gla\xE7ons:</span> 2</li>\n        </ul>\n        <p>\n            ").concat(recipe.getDescription(), "\n        </p>\n      </div>\n    </div>\n    ");
+  document.querySelector('.cards-container').appendChild(recipeCard);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RecipeCard);
 
 /***/ }),
 
@@ -1857,6 +1953,192 @@ var recipes = [{
   "ustensils": ["rouleau à patisserie", "fouet"]
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (recipes);
+
+/***/ }),
+
+/***/ "./src/entity/Recipe.js":
+/*!******************************!*\
+  !*** ./src/entity/Recipe.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+var _id = new WeakMap();
+
+var _name = new WeakMap();
+
+var _servings = new WeakMap();
+
+var _ingredients = new WeakMap();
+
+var _time = new WeakMap();
+
+var _description = new WeakMap();
+
+var _appliance = new WeakMap();
+
+var _ustensils = new WeakMap();
+
+var Recipe = /*#__PURE__*/function () {
+  function Recipe(recipe) {
+    _classCallCheck(this, Recipe);
+
+    _id.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _name.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _servings.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _ingredients.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _time.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _description.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _appliance.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _ustensils.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    this.setId(recipe.id);
+    this.setName(recipe.name);
+    this.setServings(recipe.servings);
+    this.setIngredients(recipe.ingredients);
+    this.setTime(recipe.time);
+    this.setDescription(recipe.description);
+    this.setAppliance(recipe.appliance);
+    this.setUstensils(recipe.ustensils);
+  }
+
+  _createClass(Recipe, [{
+    key: "getId",
+    value: function getId() {
+      return _classPrivateFieldGet(this, _id);
+    }
+  }, {
+    key: "setId",
+    value: function setId(id) {
+      _classPrivateFieldSet(this, _id, id);
+    }
+  }, {
+    key: "getName",
+    value: function getName() {
+      return _classPrivateFieldGet(this, _name);
+    }
+  }, {
+    key: "setName",
+    value: function setName(name) {
+      _classPrivateFieldSet(this, _name, name);
+    }
+  }, {
+    key: "getServings",
+    value: function getServings() {
+      return _classPrivateFieldGet(this, _servings);
+    }
+  }, {
+    key: "setServings",
+    value: function setServings(servings) {
+      _classPrivateFieldSet(this, _servings, servings);
+    }
+  }, {
+    key: "getIngredients",
+    value: function getIngredients() {
+      return _classPrivateFieldGet(this, _ingredients);
+    }
+  }, {
+    key: "setIngredients",
+    value: function setIngredients(ingredients) {
+      _classPrivateFieldSet(this, _ingredients, ingredients);
+    }
+  }, {
+    key: "getTime",
+    value: function getTime() {
+      return _classPrivateFieldGet(this, _time);
+    }
+  }, {
+    key: "setTime",
+    value: function setTime(time) {
+      _classPrivateFieldSet(this, _time, time);
+    }
+  }, {
+    key: "getDescription",
+    value: function getDescription() {
+      return _classPrivateFieldGet(this, _description);
+    }
+  }, {
+    key: "setDescription",
+    value: function setDescription(description) {
+      _classPrivateFieldSet(this, _description, description);
+    }
+  }, {
+    key: "getAppliance",
+    value: function getAppliance() {
+      return _classPrivateFieldGet(this, _appliance);
+    }
+  }, {
+    key: "setAppliance",
+    value: function setAppliance(appliance) {
+      _classPrivateFieldSet(this, _appliance, appliance);
+    }
+  }, {
+    key: "getUstensils",
+    value: function getUstensils() {
+      return _classPrivateFieldGet(this, _ustensils);
+    }
+  }, {
+    key: "setUstensils",
+    value: function setUstensils(ustensils) {
+      _classPrivateFieldSet(this, _ustensils, ustensils);
+    }
+  }]);
+
+  return Recipe;
+}();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Recipe);
 
 /***/ }),
 
@@ -11408,6 +11690,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_recipes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data/recipes.js */ "./src/data/recipes.js");
 /* harmony import */ var _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Dropdown.js */ "./src/components/Dropdown.js");
+/* harmony import */ var _class_RecipesManager_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./class/RecipesManager.js */ "./src/class/RecipesManager.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -11424,6 +11707,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+
+var recipesManager = new _class_RecipesManager_js__WEBPACK_IMPORTED_MODULE_2__.default(_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default);
 var data = {};
 data.appareil = new Set();
 _data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default.map(function (recipe) {

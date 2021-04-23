@@ -1,5 +1,8 @@
 import recipes from "./data/recipes.js";
 import Dropdown from "./components/Dropdown.js";
+import RecipeManager from "./class/RecipesManager.js"
+
+const recipesManager = new RecipeManager(recipes);
 
 const data = {};
 
