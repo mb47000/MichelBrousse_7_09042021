@@ -216,11 +216,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _entity_Recipe_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../entity/Recipe.js */ "./src/entity/Recipe.js");
 /* harmony import */ var _components_RecipeCard_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/RecipeCard.js */ "./src/components/RecipeCard.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
 
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
@@ -233,11 +249,18 @@ function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { 
 
 var _recipesEntities = new WeakMap();
 
+var _recipesEntitiesTemp = new WeakMap();
+
 var RecipesManager = /*#__PURE__*/function () {
   function RecipesManager(recipesList) {
     _classCallCheck(this, RecipesManager);
 
     _recipesEntities.set(this, {
+      writable: true,
+      value: []
+    });
+
+    _recipesEntitiesTemp.set(this, {
       writable: true,
       value: []
     });
@@ -258,7 +281,24 @@ var RecipesManager = /*#__PURE__*/function () {
   }, {
     key: "getRecipesEntities",
     value: function getRecipesEntities() {
-      return _classPrivateFieldGet(this, _recipesEntities);
+      if (_classPrivateFieldGet(this, _recipesEntitiesTemp).length) {
+        return _classPrivateFieldGet(this, _recipesEntitiesTemp);
+      } else {
+        return _classPrivateFieldGet(this, _recipesEntities);
+      }
+    }
+  }, {
+    key: "filterEntities",
+    value: function filterEntities(filter) {
+      if (_classPrivateFieldGet(this, _recipesEntitiesTemp).length) {
+        console.log(filter);
+      } else {
+        _classPrivateFieldSet(this, _recipesEntitiesTemp, _toConsumableArray(_classPrivateFieldGet(this, _recipesEntities)).filter(function (recipe) {
+          return recipe.getName().toLowerCase().indexOf(filter) >= 0;
+        }));
+
+        this.renderRecipes(this.getRecipesEntities());
+      }
     }
   }, {
     key: "renderRecipes",
@@ -493,6 +533,64 @@ var Dropdown = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./src/components/MainSearch.js":
+/*!**************************************!*\
+  !*** ./src/components/MainSearch.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var MainSearch =
+/**
+ * DOM element <input> for main search
+ * @type {HTMLElement}
+ */
+
+/**
+ * [CustomEvent description]
+ *
+ */
+function MainSearch(_domTarget) {
+  var _this = this;
+
+  _classCallCheck(this, MainSearch);
+
+  _defineProperty(this, "mainSearch", void 0);
+
+  _defineProperty(this, "inputChangeEvent", new CustomEvent("onMainSearchChange"));
+
+  _defineProperty(this, "createMainSearch", function (domTarget) {
+    var searchIcon = document.createElement("i");
+    searchIcon.className = "fas fa-search";
+    _this.mainSearch = document.createElement("input");
+    _this.mainSearch.type = "text";
+    _this.mainSearch.placeholder = "Rechercher un ingr\xE9dient, appareil, ustensile ou une recette";
+
+    _this.mainSearch.oninput = function (event) {
+      if (event.target.value.length >= 3) {
+        _this.mainSearch.dispatchEvent(_this.inputChangeEvent);
+      }
+    };
+
+    document.querySelector(domTarget).appendChild(_this.mainSearch);
+    document.querySelector(domTarget).appendChild(searchIcon);
+  });
+
+  this.createMainSearch(_domTarget);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MainSearch);
+
+/***/ }),
+
 /***/ "./src/components/RecipeCard.js":
 /*!**************************************!*\
   !*** ./src/components/RecipeCard.js ***!
@@ -514,7 +612,6 @@ var RecipeCard = function RecipeCard(recipe) {
 
     ingredientsListHtml += "<li><span>".concat(list.ingredient, ":</span> ").concat((_ref = (_list$quantity = list.quantity) !== null && _list$quantity !== void 0 ? _list$quantity : list.quantite) !== null && _ref !== void 0 ? _ref : '').concat((_list$unit = list.unit) !== null && _list$unit !== void 0 ? _list$unit : '', "</li>");
   });
-  console.log(ingredientsListHtml);
   recipeCard.innerHTML = "\n    <img src=\"dist/img/placeholder.png\" alt=\"...\" />\n    <div class=\"card-body\">\n      <div class=\"card-body-top\">\n        <h2 class=\"title\">".concat(recipe.getName(), "</h2>\n        <span><i class=\"far fa-clock\"></i> ").concat(recipe.getTime(), " min</span>\n      </div>\n      <div class=\"card-body-bottom\">\n        <ul>\n          ").concat(ingredientsListHtml, "\n        </ul>\n        <p>\n            ").concat(recipe.getDescription(), "\n        </p>\n      </div>\n    </div>\n    ");
   document.querySelector(".cards-container").appendChild(recipeCard);
 };
@@ -11697,7 +11794,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_recipes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data/recipes.js */ "./src/data/recipes.js");
 /* harmony import */ var _components_Dropdown_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Dropdown.js */ "./src/components/Dropdown.js");
-/* harmony import */ var _class_RecipesManager_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./class/RecipesManager.js */ "./src/class/RecipesManager.js");
+/* harmony import */ var _components_MainSearch_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/MainSearch.js */ "./src/components/MainSearch.js");
+/* harmony import */ var _class_RecipesManager_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./class/RecipesManager.js */ "./src/class/RecipesManager.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -11715,7 +11813,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-var recipesManager = new _class_RecipesManager_js__WEBPACK_IMPORTED_MODULE_2__.default(_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default);
+
+var mainSearch = new _components_MainSearch_js__WEBPACK_IMPORTED_MODULE_2__.default('.search-zone');
+var recipesManager = new _class_RecipesManager_js__WEBPACK_IMPORTED_MODULE_3__.default(_data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default);
 var data = {};
 data.appareil = new Set();
 _data_recipes_js__WEBPACK_IMPORTED_MODULE_0__.default.map(function (recipe) {
@@ -11781,7 +11881,7 @@ try {
 
 var filterTag = function filterTag(data, filter) {
   return _toConsumableArray(data).filter(function (tag) {
-    return tag.toLowerCase().indexOf(filter) >= 0;
+    return tag.toLowerCase().indexOf(filter.toLowerCase()) >= 0;
   });
 };
 
@@ -11794,6 +11894,9 @@ document.addEventListener("onTagFilterChange", function (event) {
   var targetDropdown = event.detail.dropdown;
   var tags = filterTag(data[targetDropdown.data.toLowerCase()], event.target.value.toLowerCase());
   dropdown[targetDropdown.color].updateTagList(tags);
+}, true);
+document.addEventListener("onMainSearchChange", function (event) {
+  recipesManager.filterEntities(event.target.value.toLowerCase());
 }, true);
 })();
 

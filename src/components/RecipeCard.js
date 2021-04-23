@@ -8,8 +8,6 @@ const RecipeCard = (recipe) => {
     ingredientsListHtml += `<li><span>${list.ingredient}:</span> ${list.quantity ?? list.quantite ?? ''}${list.unit ?? ''}</li>`;
   });
 
-  console.log(ingredientsListHtml)
-
   recipeCard.innerHTML = `
     <img src="dist/img/placeholder.png" alt="..." />
     <div class="card-body">

@@ -1,7 +1,9 @@
 import recipes from "./data/recipes.js";
 import Dropdown from "./components/Dropdown.js";
+import MainSearch from "./components/MainSearch.js";
 import RecipeManager from "./class/RecipesManager.js"
 
+const mainSearch = new MainSearch('.search-zone');
 const recipesManager = new RecipeManager(recipes);
 
 const data = {};
@@ -27,7 +29,7 @@ for (let recipe of recipes) {
 
 const filterTag = (data, filter) => {
   return [...data].filter((tag) => {
-    return tag.toLowerCase().indexOf(filter) >= 0;
+    return tag.toLowerCase().indexOf(filter.toLowerCase()) >= 0;
   });
 };
 
@@ -53,6 +55,14 @@ document.addEventListener(
     );
     
     dropdown[targetDropdown.color].updateTagList(tags);
+  },
+  true
+);
+
+document.addEventListener(
+  "onMainSearchChange",
+  (event) => {
+    recipesManager.filterEntities(event.target.value.toLowerCase());
   },
   true
 );
