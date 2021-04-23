@@ -1,9 +1,16 @@
 const RecipeCard = (recipe) => {
+  let recipeCard = document.createElement("article");
+  recipeCard.className = `card`;
+  let ingredientsList = recipe.getIngredients();
+  let ingredientsListHtml = '';
+  
+  ingredientsList.forEach((list) => {
+    ingredientsListHtml += `<li><span>${list.ingredient}:</span> ${list.quantity ?? list.quantite ?? ''}${list.unit ?? ''}</li>`;
+  });
 
-    let recipeCard = document.createElement("article");
-    recipeCard.className = `card`;
-    let ingredientsList = recipe.getIngredients();
-    recipeCard.innerHTML = `
+  console.log(ingredientsListHtml)
+
+  recipeCard.innerHTML = `
     <img src="dist/img/placeholder.png" alt="..." />
     <div class="card-body">
       <div class="card-body-top">
@@ -12,11 +19,7 @@ const RecipeCard = (recipe) => {
       </div>
       <div class="card-body-bottom">
         <ul>
-          <li><span>Lait de coco:</span> 400ml</li>
-          <li><span>Jus de citron:</span> 2</li>
-          <li><span>Créme de coco:</span> 4 cuillères</li>
-          <li><span>Sucre:</span> 20g</li>
-          <li><span>Glaçons:</span> 2</li>
+          ${ingredientsListHtml}
         </ul>
         <p>
             ${recipe.getDescription()}
@@ -24,11 +27,8 @@ const RecipeCard = (recipe) => {
       </div>
     </div>
     `;
-    
-    document.querySelector('.cards-container').appendChild(recipeCard);    
-}
+
+  document.querySelector(".cards-container").appendChild(recipeCard);
+};
 
 export default RecipeCard;
-
-
-    

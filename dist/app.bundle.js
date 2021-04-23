@@ -508,8 +508,15 @@ var RecipeCard = function RecipeCard(recipe) {
   var recipeCard = document.createElement("article");
   recipeCard.className = "card";
   var ingredientsList = recipe.getIngredients();
-  recipeCard.innerHTML = "\n    <img src=\"dist/img/placeholder.png\" alt=\"...\" />\n    <div class=\"card-body\">\n      <div class=\"card-body-top\">\n        <h2 class=\"title\">".concat(recipe.getName(), "</h2>\n        <span><i class=\"far fa-clock\"></i> ").concat(recipe.getTime(), " min</span>\n      </div>\n      <div class=\"card-body-bottom\">\n        <ul>\n          <li><span>Lait de coco:</span> 400ml</li>\n          <li><span>Jus de citron:</span> 2</li>\n          <li><span>Cr\xE9me de coco:</span> 4 cuill\xE8res</li>\n          <li><span>Sucre:</span> 20g</li>\n          <li><span>Gla\xE7ons:</span> 2</li>\n        </ul>\n        <p>\n            ").concat(recipe.getDescription(), "\n        </p>\n      </div>\n    </div>\n    ");
-  document.querySelector('.cards-container').appendChild(recipeCard);
+  var ingredientsListHtml = '';
+  ingredientsList.forEach(function (list) {
+    var _ref, _list$quantity, _list$unit;
+
+    ingredientsListHtml += "<li><span>".concat(list.ingredient, ":</span> ").concat((_ref = (_list$quantity = list.quantity) !== null && _list$quantity !== void 0 ? _list$quantity : list.quantite) !== null && _ref !== void 0 ? _ref : '').concat((_list$unit = list.unit) !== null && _list$unit !== void 0 ? _list$unit : '', "</li>");
+  });
+  console.log(ingredientsListHtml);
+  recipeCard.innerHTML = "\n    <img src=\"dist/img/placeholder.png\" alt=\"...\" />\n    <div class=\"card-body\">\n      <div class=\"card-body-top\">\n        <h2 class=\"title\">".concat(recipe.getName(), "</h2>\n        <span><i class=\"far fa-clock\"></i> ").concat(recipe.getTime(), " min</span>\n      </div>\n      <div class=\"card-body-bottom\">\n        <ul>\n          ").concat(ingredientsListHtml, "\n        </ul>\n        <p>\n            ").concat(recipe.getDescription(), "\n        </p>\n      </div>\n    </div>\n    ");
+  document.querySelector(".cards-container").appendChild(recipeCard);
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RecipeCard);
