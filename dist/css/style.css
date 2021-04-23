@@ -151,7 +151,7 @@ header {
     text-overflow: ellipsis; }
 
 .card {
-  height: 364px;
+  margin-bottom: 50px;
   width: 30.7%;
   border-radius: 0.4rem;
   background: #e7e7e7; }
