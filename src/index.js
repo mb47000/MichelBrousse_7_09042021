@@ -5,27 +5,8 @@ import RecipeManager from "./class/RecipesManager.js"
 
 const mainSearch = new MainSearch('.search-zone');
 const recipesManager = new RecipeManager(recipes);
-
-const data = {};
-
-data.appareil = new Set();
-recipes.map((recipe) => {
-  data.appareil.add(recipe.appliance.replace(/\./g, ""));
-});
-
-data.ustensiles = new Set();
-for (let recipe of recipes) {
-  for (let ustensil of recipe.ustensils) {
-    data.ustensiles.add(ustensil);
-  }
-}
-
-data.ingredients = new Set();
-for (let recipe of recipes) {
-  for (let ingredient of recipe.ingredients) {
-    data.ingredients.add(ingredient.ingredient);
-  }
-}
+const data = recipesManager.getRecipesEntities();
+const tagsList = recipesManager.getTags();
 
 const filterTag = (data, filter) => {
   return [...data].filter((tag) => {
@@ -33,15 +14,16 @@ const filterTag = (data, filter) => {
   });
 };
 
+
 const dropdown = {
   blue: new Dropdown(
     ".filter-container",
     "Ingredients",
     "blue",
-    data.ingredients
+    tagsList.ingredients
   ),
-  green: new Dropdown(".filter-container", "Appareil", "green", data.appareil),
-  red: new Dropdown(".filter-container", "Ustensiles", "red", data.ustensiles),
+  green: new Dropdown(".filter-container", "Appareil", "green", tagsList.appareil),
+  red: new Dropdown(".filter-container", "Ustensiles", "red", tagsList.ustensiles),
 };
 
 document.addEventListener(
@@ -49,12 +31,28 @@ document.addEventListener(
   (event) => {
     let targetDropdown = event.detail.dropdown;
 
-    const tags = filterTag(
-      data[targetDropdown.data.toLowerCase()],
+    const List = filterTag(
+      tagsList[targetDropdown.data.toLowerCase()],
       event.target.value.toLowerCase()
     );
-    
-    dropdown[targetDropdown.color].updateTagList(tags);
+
+    dropdown[targetDropdown.color].updateTagList(List);
+  },
+  true
+);
+
+document.addEventListener(
+  "onAddTag",
+  (event) => {
+    console.log(event.target);
+  },
+  true
+);
+
+document.addEventListener(
+  "onRemoveTag",
+  (event) => {
+    console.log(event.target);
   },
   true
 );
@@ -63,6 +61,15 @@ document.addEventListener(
   "onMainSearchChange",
   (event) => {
     recipesManager.filterEntities(event.target.value.toLowerCase());
+  },
+  true
+);
+
+document.addEventListener(
+  "onMainSearchReset",
+  () => {
+    recipesManager.emptyRecipesEntitiesTemp();
+    recipesManager.renderRecipes(recipesManager.getRecipesEntities());
   },
   true
 );

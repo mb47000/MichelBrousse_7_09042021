@@ -5,6 +5,14 @@ class Tag {
    */
   buttonTag;
 
+  /**
+   * [CustomEvent description]
+   *
+   * @param   {[type]}  tagFilterChange  [tagFilterChange description]
+   *
+   */
+   removeTagEvent = new CustomEvent("onRemoveTag");
+
   constructor(color, name) {
     this.createButtonTag(color, name);
   }
@@ -14,6 +22,7 @@ class Tag {
     this.buttonTag.className = `filter-tag-${color}`;
     this.buttonTag.innerHTML = `<span>${name}</span> <i class="far fa-times-circle"></i>`;
     this.buttonTag.onclick = () => {
+      this.buttonTag.dispatchEvent(this.removeTagEvent);
       this.buttonTag.remove();
     };
   };

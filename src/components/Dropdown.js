@@ -24,6 +24,14 @@ class Dropdown {
   });
 
   /**
+   * [CustomEvent description]
+   *
+   * @param   {[type]}  tagFilterChange  [tagFilterChange description]
+   *
+   */
+   addTagEvent = new CustomEvent("onAddTag");
+
+  /**
    * [constructor description]
    *
    * @param   {HTMLElement}  domTarget  Dom element to inject
@@ -97,6 +105,7 @@ class Dropdown {
         if (!Tag.tagExists(event.target.innerHTML)) {
           let newTag = new Tag(this.color, event.target.innerHTML);
           tagListContainer.appendChild(newTag.buttonTag);
+          tagElement.dispatchEvent(this.addTagEvent);
         } 
       }
       tagElement.innerHTML = tag;
