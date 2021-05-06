@@ -1,9 +1,9 @@
 import recipes from "./data/recipes.js";
 import Dropdown from "./components/Dropdown.js";
 import MainSearch from "./components/MainSearch.js";
-import RecipeManager from "./class/RecipesManager.js"
+import RecipeManager from "./class/RecipesManager.js";
 
-const mainSearch = new MainSearch('.search-zone');
+const mainSearch = new MainSearch(".search-zone");
 const recipesManager = new RecipeManager(recipes);
 const data = recipesManager.getRecipesEntities();
 const tagsList = recipesManager.getTags();
@@ -14,7 +14,6 @@ const filterTag = (data, filter) => {
   });
 };
 
-
 const dropdown = {
   blue: new Dropdown(
     ".filter-container",
@@ -22,8 +21,18 @@ const dropdown = {
     "blue",
     tagsList.ingredients
   ),
-  green: new Dropdown(".filter-container", "Appareil", "green", tagsList.appareil),
-  red: new Dropdown(".filter-container", "Ustensiles", "red", tagsList.ustensiles),
+  green: new Dropdown(
+    ".filter-container",
+    "Appareil",
+    "green",
+    tagsList.appareil
+  ),
+  red: new Dropdown(
+    ".filter-container",
+    "Ustensiles",
+    "red",
+    tagsList.ustensiles
+  ),
 };
 
 document.addEventListener(
@@ -44,7 +53,10 @@ document.addEventListener(
 document.addEventListener(
   "onAddTag",
   (event) => {
-    console.log(event.target);
+    recipesManager.addFilterTags({
+      value: event.target.innerHTML.toLowerCase(),
+      tagCategory: event.detail.dropdown.data.toLowerCase(),
+    });
   },
   true
 );
@@ -52,7 +64,13 @@ document.addEventListener(
 document.addEventListener(
   "onRemoveTag",
   (event) => {
-    console.log(event.target);
+    recipesManager.removeFilterTags(
+      event.target.firstChild.innerHTML.toLowerCase()
+    );
+    
+    dropdown.blue.updateTagList(tagsList.ingredients);
+    dropdown.green.updateTagList(tagsList.appareil);
+    dropdown.red.updateTagList(tagsList.ustensiles);
   },
   true
 );
@@ -61,6 +79,10 @@ document.addEventListener(
   "onMainSearchChange",
   (event) => {
     recipesManager.filterEntities(event.target.value.toLowerCase());
+    dropdown.blue.updateTagList(tagsList.ingredients);
+    dropdown.green.updateTagList(tagsList.appareil);
+    dropdown.red.updateTagList(tagsList.ustensiles);
+    recipesManager.renderRecipes(recipesManager.getRecipesEntities(recipesManager.noResults()));
   },
   true
 );
@@ -68,8 +90,15 @@ document.addEventListener(
 document.addEventListener(
   "onMainSearchReset",
   () => {
-    recipesManager.emptyRecipesEntitiesTemp();
-    recipesManager.renderRecipes(recipesManager.getRecipesEntities());
+    if (!recipesManager.getFiltersTag().length) {
+      recipesManager.emptyRecipesEntitiesTemp();
+      recipesManager.renderRecipes(recipesManager.getRecipesEntities());
+      recipesManager.setTags(recipesManager.getRecipesEntities());
+      dropdown.blue.updateTagList(tagsList.ingredients);
+      dropdown.green.updateTagList(tagsList.appareil);
+      dropdown.red.updateTagList(tagsList.ustensiles);
+    }
+    recipesManager.resetLastSearch();
   },
   true
 );

@@ -29,7 +29,9 @@ class Dropdown {
    * @param   {[type]}  tagFilterChange  [tagFilterChange description]
    *
    */
-   addTagEvent = new CustomEvent("onAddTag");
+   addTagEvent = new CustomEvent("onAddTag", {
+    detail: { dropdown: {data: ''} },
+  });
 
   /**
    * [constructor description]
@@ -45,6 +47,7 @@ class Dropdown {
     this.render(domTarget, this.fullDropdown());
     this.inputChangeEvent.detail.dropdown.color = color;
     this.inputChangeEvent.detail.dropdown.data = title;
+    this.addTagEvent.detail.dropdown.data = title;
     this.color = color;
   }
 

@@ -4,8 +4,9 @@ import RecipeCard from "../components/RecipeCard.js";
 class RecipesManager {
   #recipesEntities = [];
   #recipesEntitiesTemp = [];
-  #lastSearch = '';
+  #lastSearch = "";
   #tags = {};
+  #filterTags = [];
 
   constructor(recipesList) {
     this.setRecipesEntities(recipesList);
@@ -19,9 +20,13 @@ class RecipesManager {
     });
   }
 
+  noResults() {
+    return this.#recipesEntitiesTemp.length ? false : true;
+  }
+
   getRecipesEntities(noResults = false) {
     if (noResults) {
-      return 'pas de recette dans la liste';
+      return "Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc.";
     } else if (this.#recipesEntitiesTemp.length) {
       return this.#recipesEntitiesTemp;
     } else {
@@ -49,35 +54,148 @@ class RecipesManager {
     return this.#tags;
   }
 
+  addFilterTags(tag) {
+    if (this.getFiltersTag().length || this.getLastSearch().length >= 3) this.filterEntities(tag, true, true);
+    else this.filterEntities(tag, true);
+    this.renderRecipes(this.getRecipesEntities(this.noResults()));
+  }
+
+  //todo: Reorganize that mess
+  removeFilterTags(tag) {
+    this.getFiltersTag().splice(
+      this.getFiltersTag().findIndex((iTag) => iTag.value === tag),
+      1
+    );
+    if (!this.getFiltersTag().length && this.getLastSearch().length < 3) {
+      this.emptyRecipesEntitiesTemp();
+      this.renderRecipes(this.getRecipesEntities());
+      this.setTags(this.getRecipesEntities());
+    } else if (
+      !this.getFiltersTag().length &&
+      this.getLastSearch().length >= 3
+    ) {
+      this.emptyRecipesEntitiesTemp();
+      this.filterEntities(this.getLastSearch());
+      this.renderRecipes(this.getRecipesEntities(this.noResults()));
+      this.setTags(this.getRecipesEntities());
+    } else if (
+      this.getFiltersTag().length &&
+      this.getLastSearch().length >= 3
+    ) {
+      this.emptyRecipesEntitiesTemp();
+      this.#recipesEntitiesTemp = this.getRecipesEntities();
+      this.filterEntities(this.getLastSearch());
+      this.setTags(this.getRecipesEntities());
+      this.getFiltersTag().forEach((tag) => {
+        this.filterEntities(tag, true, true);
+      });
+      this.renderRecipes(this.getRecipesEntities(this.noResults()));
+    } else if (this.getFiltersTag().length && this.getLastSearch().length < 3) {
+      this.emptyRecipesEntitiesTemp();
+      this.#recipesEntitiesTemp = this.getRecipesEntities();
+      this.getFiltersTag().forEach((tag) => {
+        this.filterEntities(tag, true, true);
+      });
+      this.renderRecipes(this.getRecipesEntities(this.noResults()));
+      this.setTags(this.getRecipesEntities());
+    }
+  }
+
+  getFiltersTag() {
+    return this.#filterTags;
+  }
+
+  getLastSearch() {
+    return this.#lastSearch;
+  }
+
+  resetLastSearch() {
+    this.#lastSearch = "";
+  }
+
   emptyRecipesEntitiesTemp() {
     this.#recipesEntitiesTemp = [];
   }
 
-
-  filterEntities(filter) {
-    let listToUse = this.#recipesEntitiesTemp.length && (filter.length > this.#lastSearch.length) ? this.#recipesEntitiesTemp : this.#recipesEntities;
-
-    this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
-      return recipe.getName().toLowerCase().indexOf(filter) >= 0 || recipe.getDescription().toLowerCase().indexOf(filter) >= 0 || recipe.getIngredients().forEach(recipe => recipe.ingredient.toLowerCase().indexOf(filter) >= 0);
-    });
-
-    this.#lastSearch = filter;
-    let noResults = this.#recipesEntitiesTemp.length ? false : true;
-    this.renderRecipes(this.getRecipesEntities(noResults));
+  filterEntities(filter, byTag = false, searchLoop = false) {
+    let lastRecipesArray = this.#recipesEntitiesTemp;
+    let listToUse =
+      (this.#recipesEntitiesTemp.length &&
+        (filter.length > this.#lastSearch.length ||
+          this.#filterTags.length ||
+          (this.#lastSearch.length && byTag))) ||
+      searchLoop
+        ? this.#recipesEntitiesTemp
+        : this.#recipesEntities;
+    if (!byTag) {
+      this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
+        return (
+          recipe.getName().toLowerCase().indexOf(filter) >= 0 ||
+          recipe.getDescription().toLowerCase().indexOf(filter) >= 0 ||
+          recipe
+            .getIngredients()
+            .some(
+              (recipe) => recipe.ingredient.toLowerCase().indexOf(filter) >= 0
+            )
+        );
+      });
+      this.#lastSearch = filter;
+      if (
+        this.getFiltersTag().length &&
+        (filter.length < this.#lastSearch.length || !lastRecipesArray.length)
+      ) {
+        this.getFiltersTag().forEach((tag) => {
+          this.filterEntities(tag, true, true);
+        });
+      }
+      this.setTags(this.getRecipesEntities());
+    } else {
+      this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
+        switch (filter.tagCategory) {
+          case "ingredients":
+            return recipe
+              .getIngredients()
+              .some(
+                (recipe) =>
+                  recipe.ingredient.toLowerCase().indexOf(filter.value) >= 0
+              );
+          case "appareil":
+            return (
+              recipe
+                .getAppliance()
+                .replace(/\./g, "")
+                .toLowerCase()
+                .indexOf(filter.value) >= 0
+            );
+          case "ustensiles":
+            return recipe
+              .getUstensils()
+              .some(
+                (ustensile) =>
+                  ustensile.toLowerCase().indexOf(filter.value) >= 0
+              );
+        }
+      });
+      if (!this.getFiltersTag().some((tag) => tag.value === filter.value)) {
+        this.#filterTags.push({
+          value: filter.value,
+          tagCategory: filter.tagCategory,
+        });
+      }
+    }
   }
 
   renderRecipes(recipesList) {
     let cardContainer = document.querySelector(".cards-container");
-    cardContainer.innerHTML = '';
+    cardContainer.innerHTML = "";
 
-    if (typeof recipesList !== 'object') {
+    if (typeof recipesList !== "object") {
       cardContainer.innerHTML = recipesList;
     } else {
       recipesList.forEach((recipe) => {
         RecipeCard(recipe);
       });
     }
-
   }
 }
 
