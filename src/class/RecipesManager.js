@@ -148,7 +148,6 @@ class RecipesManager {
           this.filterEntities(tag, true, true);
         });
       }
-      this.setTags(this.getRecipesEntities());
     } else {
       this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
         switch (filter.tagCategory) {
@@ -183,6 +182,7 @@ class RecipesManager {
         });
       }
     }
+    this.setTags(this.getRecipesEntities());
   }
 
   renderRecipes(recipesList) {

@@ -57,6 +57,9 @@ document.addEventListener(
       value: event.target.innerHTML.toLowerCase(),
       tagCategory: event.detail.dropdown.data.toLowerCase(),
     });
+    dropdown.blue.updateTagList(tagsList.ingredients);
+    dropdown.green.updateTagList(tagsList.appareil);
+    dropdown.red.updateTagList(tagsList.ustensiles);
   },
   true
 );
@@ -67,7 +70,7 @@ document.addEventListener(
     recipesManager.removeFilterTags(
       event.target.firstChild.innerHTML.toLowerCase()
     );
-    
+
     dropdown.blue.updateTagList(tagsList.ingredients);
     dropdown.green.updateTagList(tagsList.appareil);
     dropdown.red.updateTagList(tagsList.ustensiles);
@@ -82,7 +85,9 @@ document.addEventListener(
     dropdown.blue.updateTagList(tagsList.ingredients);
     dropdown.green.updateTagList(tagsList.appareil);
     dropdown.red.updateTagList(tagsList.ustensiles);
-    recipesManager.renderRecipes(recipesManager.getRecipesEntities(recipesManager.noResults()));
+    recipesManager.renderRecipes(
+      recipesManager.getRecipesEntities(recipesManager.noResults())
+    );
   },
   true
 );

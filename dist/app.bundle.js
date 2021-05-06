@@ -465,8 +465,6 @@ var RecipesManager = /*#__PURE__*/function () {
             _this3.filterEntities(tag, true, true);
           });
         }
-
-        this.setTags(this.getRecipesEntities());
       } else {
         _classPrivateFieldSet(this, _recipesEntitiesTemp, listToUse.filter(function (recipe) {
           switch (filter.tagCategory) {
@@ -494,6 +492,8 @@ var RecipesManager = /*#__PURE__*/function () {
           });
         }
       }
+
+      this.setTags(this.getRecipesEntities());
     }
   }, {
     key: "renderRecipes",
@@ -12102,6 +12102,9 @@ document.addEventListener("onAddTag", function (event) {
     value: event.target.innerHTML.toLowerCase(),
     tagCategory: event.detail.dropdown.data.toLowerCase()
   });
+  dropdown.blue.updateTagList(tagsList.ingredients);
+  dropdown.green.updateTagList(tagsList.appareil);
+  dropdown.red.updateTagList(tagsList.ustensiles);
 }, true);
 document.addEventListener("onRemoveTag", function (event) {
   recipesManager.removeFilterTags(event.target.firstChild.innerHTML.toLowerCase());
