@@ -297,6 +297,11 @@ var RecipesManager = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "setRecipesEntitiesTemp",
+    value: function setRecipesEntitiesTemp() {
+      _classPrivateFieldSet(this, _recipesEntitiesTemp, this.getRecipesEntities());
+    }
+  }, {
     key: "noResults",
     value: function noResults() {
       return _classPrivateFieldGet(this, _recipesEntitiesTemp).length ? false : true;
@@ -12120,16 +12125,23 @@ document.addEventListener("onMainSearchChange", function (event) {
   recipesManager.renderRecipes(recipesManager.getRecipesEntities(recipesManager.noResults()));
 }, true);
 document.addEventListener("onMainSearchReset", function () {
-  if (!recipesManager.getFiltersTag().length) {
-    recipesManager.emptyRecipesEntitiesTemp();
+  recipesManager.resetLastSearch();
+  recipesManager.emptyRecipesEntitiesTemp();
+
+  if (recipesManager.getFiltersTag().length) {
+    recipesManager.setRecipesEntitiesTemp();
+    recipesManager.getFiltersTag().forEach(function (tag) {
+      recipesManager.filterEntities(tag, true, true);
+      recipesManager.renderRecipes(recipesManager.getRecipesEntities(recipesManager.noResults()));
+    });
+  } else {
     recipesManager.renderRecipes(recipesManager.getRecipesEntities());
-    recipesManager.setTags(recipesManager.getRecipesEntities());
-    dropdown.blue.updateTagList(tagsList.ingredients);
-    dropdown.green.updateTagList(tagsList.appareil);
-    dropdown.red.updateTagList(tagsList.ustensiles);
   }
 
-  recipesManager.resetLastSearch();
+  recipesManager.setTags(recipesManager.getRecipesEntities());
+  dropdown.blue.updateTagList(tagsList.ingredients);
+  dropdown.green.updateTagList(tagsList.appareil);
+  dropdown.red.updateTagList(tagsList.ustensiles);
 }, true);
 })();
 

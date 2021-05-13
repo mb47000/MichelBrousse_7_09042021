@@ -20,6 +20,10 @@ class RecipesManager {
     });
   }
 
+  setRecipesEntitiesTemp() {
+    this.#recipesEntitiesTemp = this.getRecipesEntities();
+  }
+
   noResults() {
     return this.#recipesEntitiesTemp.length ? false : true;
   }
