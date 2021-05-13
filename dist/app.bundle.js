@@ -203,6 +203,135 @@ module.exports = function () {
 
 /***/ }),
 
+/***/ "./src/class/RecipesDictionary.js":
+/*!****************************************!*\
+  !*** ./src/class/RecipesDictionary.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+var _dictionary = new WeakMap();
+
+var RecipesDictionary = /*#__PURE__*/function () {
+  function RecipesDictionary(recipesList) {
+    _classCallCheck(this, RecipesDictionary);
+
+    _dictionary.set(this, {
+      writable: true,
+      value: {}
+    });
+
+    this.createDictionary(recipesList);
+  }
+
+  _createClass(RecipesDictionary, [{
+    key: "getDictionary",
+    value: function getDictionary() {
+      return _classPrivateFieldGet(this, _dictionary);
+    }
+  }, {
+    key: "createDictionary",
+    value: function createDictionary(recipesList) {
+      var _iterator = _createForOfIteratorHelper(recipesList),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var recipe = _step.value;
+          var ingredients = [];
+
+          var _iterator2 = _createForOfIteratorHelper(recipe.getIngredients()),
+              _step2;
+
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var ingredient = _step2.value;
+              ingredients.push(ingredient.ingredient);
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+
+          var currentRecipe = "".concat(recipe.getName(), " ").concat(recipe.getDescription(), " ").concat(ingredients.join(" "));
+          var currentRecipeArray = this.formatKey(currentRecipe).split(" ");
+
+          var _iterator3 = _createForOfIteratorHelper(currentRecipeArray),
+              _step3;
+
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var keyword = _step3.value;
+              var keywordHash = [];
+
+              for (var i = 0; i <= keyword.length; i++) {
+                keywordHash.push(keyword.substring(0, i));
+              }
+
+              for (var _i = 0, _keywordHash = keywordHash; _i < _keywordHash.length; _i++) {
+                var key = _keywordHash[_i];
+                var formatedKey = key.trim();
+
+                if (formatedKey) {
+                  if (_classPrivateFieldGet(this, _dictionary).hasOwnProperty(formatedKey)) {
+                    _classPrivateFieldGet(this, _dictionary)[formatedKey].add(recipe.getId());
+                  } else {
+                    _classPrivateFieldGet(this, _dictionary)[formatedKey] = new Set();
+
+                    _classPrivateFieldGet(this, _dictionary)[formatedKey].add(recipe.getId());
+                  }
+                }
+              }
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
+    key: "formatKey",
+    value: function formatKey(string) {
+      return string.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/[']/g, "").replace(/[\d]/g, "").replace(/[àäâ]/g, "a").replace(/[ç]/g, "c").replace(/[éèêë]/g, "e").replace(/[îï]/g, "i").replace(/[ôö]/g, "o").replace(/[ùûû]/g, "u");
+    }
+  }]);
+
+  return RecipesDictionary;
+}();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RecipesDictionary);
+
+/***/ }),
+
 /***/ "./src/class/RecipesManager.js":
 /*!*************************************!*\
   !*** ./src/class/RecipesManager.js ***!
@@ -216,6 +345,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _entity_Recipe_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../entity/Recipe.js */ "./src/entity/Recipe.js");
 /* harmony import */ var _components_RecipeCard_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/RecipeCard.js */ "./src/components/RecipeCard.js");
+/* harmony import */ var _RecipesDictionary_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RecipesDictionary.js */ "./src/class/RecipesDictionary.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -230,15 +360,16 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
-
-function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
-
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
 
-function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+
 
 
 
@@ -252,6 +383,8 @@ var _lastSearch = new WeakMap();
 var _tags = new WeakMap();
 
 var _filterTags = new WeakMap();
+
+var _dictionary = new WeakMap();
 
 var RecipesManager = /*#__PURE__*/function () {
   function RecipesManager(recipesList) {
@@ -282,9 +415,16 @@ var RecipesManager = /*#__PURE__*/function () {
       value: []
     });
 
+    _dictionary.set(this, {
+      writable: true,
+      value: void 0
+    });
+
     this.setRecipesEntities(recipesList);
     this.setTags(this.getRecipesEntities());
     this.renderRecipes(this.getRecipesEntities());
+
+    _classPrivateFieldSet(this, _dictionary, new _RecipesDictionary_js__WEBPACK_IMPORTED_MODULE_2__.default(this.getRecipesEntities()));
   }
 
   _createClass(RecipesManager, [{
@@ -313,6 +453,11 @@ var RecipesManager = /*#__PURE__*/function () {
       } else {
         return _classPrivateFieldGet(this, _recipesEntities);
       }
+    }
+  }, {
+    key: "setRecipesEntitiesTemp",
+    value: function setRecipesEntitiesTemp() {
+      _classPrivateFieldSet(this, _recipesEntitiesTemp, this.getRecipesEntities());
     }
   }, {
     key: "setTags",
@@ -432,7 +577,7 @@ var RecipesManager = /*#__PURE__*/function () {
   }, {
     key: "resetLastSearch",
     value: function resetLastSearch() {
-      _classPrivateFieldSet(this, _lastSearch, "");
+      _classPrivateFieldSet(this, _lastSearch, '');
     }
   }, {
     key: "emptyRecipesEntitiesTemp",
@@ -452,19 +597,43 @@ var RecipesManager = /*#__PURE__*/function () {
       var listToUse = _classPrivateFieldGet(this, _recipesEntitiesTemp).length && (filter.length > _classPrivateFieldGet(this, _lastSearch).length || _classPrivateFieldGet(this, _filterTags).length || _classPrivateFieldGet(this, _lastSearch).length && byTag) || searchLoop ? _classPrivateFieldGet(this, _recipesEntitiesTemp) : _classPrivateFieldGet(this, _recipesEntities);
 
       if (!byTag) {
-        _classPrivateFieldSet(this, _recipesEntitiesTemp, listToUse.filter(function (recipe) {
-          return recipe.getName().toLowerCase().indexOf(filter) >= 0 || recipe.getDescription().toLowerCase().indexOf(filter) >= 0 || recipe.getIngredients().some(function (recipe) {
-            return recipe.ingredient.toLowerCase().indexOf(filter) >= 0;
-          });
-        }));
+        var _ret = function () {
+          var formatFilter = _classPrivateFieldGet(_this3, _dictionary).formatKey(filter).trim();
 
-        _classPrivateFieldSet(this, _lastSearch, filter);
+          var dictionary = _classPrivateFieldGet(_this3, _dictionary).getDictionary();
 
-        if (this.getFiltersTag().length && (filter.length < _classPrivateFieldGet(this, _lastSearch).length || !lastRecipesArray.length)) {
-          this.getFiltersTag().forEach(function (tag) {
-            _this3.filterEntities(tag, true, true);
-          });
-        }
+          formatFilter = formatFilter.split(" ");
+
+          var _loop = function _loop(i) {
+            if (dictionary.hasOwnProperty(formatFilter[i])) {
+              _classPrivateFieldSet(_this3, _recipesEntitiesTemp, listToUse.filter(function (recipe) {
+                return dictionary[formatFilter[i]].has(recipe.getId());
+              }));
+            } else {
+              return {
+                v: {
+                  v: _classPrivateFieldSet(_this3, _recipesEntitiesTemp, [])
+                }
+              };
+            }
+          };
+
+          for (var i = 0; i < formatFilter.length; i++) {
+            var _ret2 = _loop(i);
+
+            if (_typeof(_ret2) === "object") return _ret2.v;
+          }
+
+          _classPrivateFieldSet(_this3, _lastSearch, filter);
+
+          if (_this3.getFiltersTag().length && (filter.length < _classPrivateFieldGet(_this3, _lastSearch).length || !lastRecipesArray.length)) {
+            _this3.getFiltersTag().forEach(function (tag) {
+              _this3.filterEntities(tag, true, true);
+            });
+          }
+        }();
+
+        if (_typeof(_ret) === "object") return _ret.v;
       } else {
         _classPrivateFieldSet(this, _recipesEntitiesTemp, listToUse.filter(function (recipe) {
           switch (filter.tagCategory) {
@@ -12120,16 +12289,23 @@ document.addEventListener("onMainSearchChange", function (event) {
   recipesManager.renderRecipes(recipesManager.getRecipesEntities(recipesManager.noResults()));
 }, true);
 document.addEventListener("onMainSearchReset", function () {
-  if (!recipesManager.getFiltersTag().length) {
-    recipesManager.emptyRecipesEntitiesTemp();
+  recipesManager.resetLastSearch();
+  recipesManager.emptyRecipesEntitiesTemp();
+
+  if (recipesManager.getFiltersTag().length) {
+    recipesManager.setRecipesEntitiesTemp();
+    recipesManager.getFiltersTag().forEach(function (tag) {
+      recipesManager.filterEntities(tag, true, true);
+      recipesManager.renderRecipes(recipesManager.getRecipesEntities(recipesManager.noResults()));
+    });
+  } else {
     recipesManager.renderRecipes(recipesManager.getRecipesEntities());
-    recipesManager.setTags(recipesManager.getRecipesEntities());
-    dropdown.blue.updateTagList(tagsList.ingredients);
-    dropdown.green.updateTagList(tagsList.appareil);
-    dropdown.red.updateTagList(tagsList.ustensiles);
   }
 
-  recipesManager.resetLastSearch();
+  recipesManager.setTags(recipesManager.getRecipesEntities());
+  dropdown.blue.updateTagList(tagsList.ingredients);
+  dropdown.green.updateTagList(tagsList.appareil);
+  dropdown.red.updateTagList(tagsList.ustensiles);
 }, true);
 })();
 

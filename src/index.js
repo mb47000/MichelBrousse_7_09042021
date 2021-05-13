@@ -95,15 +95,26 @@ document.addEventListener(
 document.addEventListener(
   "onMainSearchReset",
   () => {
-    if (!recipesManager.getFiltersTag().length) {
-      recipesManager.emptyRecipesEntitiesTemp();
-      recipesManager.renderRecipes(recipesManager.getRecipesEntities());
-      recipesManager.setTags(recipesManager.getRecipesEntities());
-      dropdown.blue.updateTagList(tagsList.ingredients);
-      dropdown.green.updateTagList(tagsList.appareil);
-      dropdown.red.updateTagList(tagsList.ustensiles);
-    }
     recipesManager.resetLastSearch();
+    recipesManager.emptyRecipesEntitiesTemp();
+
+    if (recipesManager.getFiltersTag().length) {
+      recipesManager.setRecipesEntitiesTemp();
+      recipesManager.getFiltersTag().forEach((tag) => {
+        recipesManager.filterEntities(tag, true, true);
+        recipesManager.renderRecipes(
+          recipesManager.getRecipesEntities(recipesManager.noResults())
+        );
+      });
+    } else {
+      recipesManager.renderRecipes(
+        recipesManager.getRecipesEntities()
+      );
+    }
+    recipesManager.setTags(recipesManager.getRecipesEntities());
+    dropdown.blue.updateTagList(tagsList.ingredients);
+    dropdown.green.updateTagList(tagsList.appareil);
+    dropdown.red.updateTagList(tagsList.ustensiles);
   },
   true
 );

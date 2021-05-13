@@ -1,5 +1,6 @@
 import Recipe from "../entity/Recipe.js";
 import RecipeCard from "../components/RecipeCard.js";
+import RecipesDictionary from "./RecipesDictionary.js";
 
 class RecipesManager {
   #recipesEntities = [];
@@ -7,11 +8,13 @@ class RecipesManager {
   #lastSearch = "";
   #tags = {};
   #filterTags = [];
+  #dictionary;
 
   constructor(recipesList) {
     this.setRecipesEntities(recipesList);
     this.setTags(this.getRecipesEntities());
     this.renderRecipes(this.getRecipesEntities());
+    this.#dictionary = new RecipesDictionary(this.getRecipesEntities());
   }
 
   setRecipesEntities(recipesList) {
@@ -32,6 +35,10 @@ class RecipesManager {
     } else {
       return this.#recipesEntities;
     }
+  }
+
+  setRecipesEntitiesTemp() {
+    this.#recipesEntitiesTemp = this.getRecipesEntities();
   }
 
   setTags(recipesList) {
@@ -110,7 +117,7 @@ class RecipesManager {
   }
 
   resetLastSearch() {
-    this.#lastSearch = "";
+    this.#lastSearch = '';
   }
 
   emptyRecipesEntitiesTemp() {
@@ -128,17 +135,23 @@ class RecipesManager {
         ? this.#recipesEntitiesTemp
         : this.#recipesEntities;
     if (!byTag) {
-      this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
-        return (
-          recipe.getName().toLowerCase().indexOf(filter) >= 0 ||
-          recipe.getDescription().toLowerCase().indexOf(filter) >= 0 ||
-          recipe
-            .getIngredients()
-            .some(
-              (recipe) => recipe.ingredient.toLowerCase().indexOf(filter) >= 0
-            )
-        );
-      });
+      let formatFilter = this.#dictionary.formatKey(filter).trim();
+      let dictionary = this.#dictionary.getDictionary();
+      formatFilter = formatFilter.split(" ")
+
+      for (let i = 0; i < formatFilter.length; i++) {
+        if(dictionary.hasOwnProperty(formatFilter[i])){
+          this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
+            return (
+              dictionary[formatFilter[i]].has(recipe.getId()) 
+            );
+          });
+        } else {
+          return this.#recipesEntitiesTemp = [];
+        }
+      }
+      
+     
       this.#lastSearch = filter;
       if (
         this.getFiltersTag().length &&
@@ -151,6 +164,7 @@ class RecipesManager {
     } else {
       this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
         switch (filter.tagCategory) {
+          
           case "ingredients":
             return recipe
               .getIngredients()
