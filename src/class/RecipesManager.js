@@ -64,7 +64,6 @@ class RecipesManager {
     this.renderRecipes(this.getRecipesEntities(this.noResults()));
   }
 
-  //todo: Reorganize that mess
   removeFilterTags(tag) {
     this.getFiltersTag().splice(
       this.getFiltersTag().findIndex((iTag) => iTag.value === tag),
@@ -87,7 +86,7 @@ class RecipesManager {
       this.getLastSearch().length >= 3
     ) {
       this.emptyRecipesEntitiesTemp();
-      this.#recipesEntitiesTemp = this.getRecipesEntities();
+      this.setRecipesEntitiesTemp();
       this.filterEntities(this.getLastSearch());
       this.setTags(this.getRecipesEntities());
       this.getFiltersTag().forEach((tag) => {
@@ -96,7 +95,7 @@ class RecipesManager {
       this.renderRecipes(this.getRecipesEntities(this.noResults()));
     } else if (this.getFiltersTag().length && this.getLastSearch().length < 3) {
       this.emptyRecipesEntitiesTemp();
-      this.#recipesEntitiesTemp = this.getRecipesEntities();
+      this.setRecipesEntitiesTemp();
       this.getFiltersTag().forEach((tag) => {
         this.filterEntities(tag, true, true);
       });

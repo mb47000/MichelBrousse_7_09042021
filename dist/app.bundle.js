@@ -381,8 +381,7 @@ var RecipesManager = /*#__PURE__*/function () {
     value: function addFilterTags(tag) {
       if (this.getFiltersTag().length || this.getLastSearch().length >= 3) this.filterEntities(tag, true, true);else this.filterEntities(tag, true);
       this.renderRecipes(this.getRecipesEntities(this.noResults()));
-    } //todo: Reorganize that mess
-
+    }
   }, {
     key: "removeFilterTags",
     value: function removeFilterTags(tag) {
@@ -403,9 +402,7 @@ var RecipesManager = /*#__PURE__*/function () {
         this.setTags(this.getRecipesEntities());
       } else if (this.getFiltersTag().length && this.getLastSearch().length >= 3) {
         this.emptyRecipesEntitiesTemp();
-
-        _classPrivateFieldSet(this, _recipesEntitiesTemp, this.getRecipesEntities());
-
+        this.setRecipesEntitiesTemp();
         this.filterEntities(this.getLastSearch());
         this.setTags(this.getRecipesEntities());
         this.getFiltersTag().forEach(function (tag) {
@@ -414,9 +411,7 @@ var RecipesManager = /*#__PURE__*/function () {
         this.renderRecipes(this.getRecipesEntities(this.noResults()));
       } else if (this.getFiltersTag().length && this.getLastSearch().length < 3) {
         this.emptyRecipesEntitiesTemp();
-
-        _classPrivateFieldSet(this, _recipesEntitiesTemp, this.getRecipesEntities());
-
+        this.setRecipesEntitiesTemp();
         this.getFiltersTag().forEach(function (tag) {
           _this2.filterEntities(tag, true, true);
         });
