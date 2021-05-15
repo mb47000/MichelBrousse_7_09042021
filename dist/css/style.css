@@ -116,7 +116,8 @@ header {
 .cards-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; }
+  margin-left: -2%;
+  margin-right: -2%; }
 
 .filter-container, .filter-container-tag {
   display: flex;
@@ -152,6 +153,7 @@ header {
 
 .card {
   margin-bottom: 50px;
+  margin-left: 2%;
   width: 30.7%;
   border-radius: 0.4rem;
   background: #e7e7e7; }
