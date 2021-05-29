@@ -122,6 +122,9 @@ header {
 .filter-container, .filter-container-tag {
   display: flex;
   margin-bottom: 15px; }
+  @media screen and (max-width: 762px) {
+    .filter-container, .filter-container-tag {
+      overflow-y: auto; } }
 
 .search-zone {
   background: #e7e7e7;
@@ -197,6 +200,12 @@ header {
         -webkit-box-orient: vertical;
         font-size: 0.75rem;
         text-overflow: ellipsis; }
+  @media screen and (max-width: 1200px) {
+    .card {
+      width: 47%; } }
+  @media screen and (max-width: 762px) {
+    .card {
+      width: 96%; } }
 
 .filter-button-blue {
   display: flex;
@@ -382,6 +391,9 @@ header {
       font-family: "Lato", sans-serif;
       font-weight: 400;
       cursor: pointer; }
+    @media screen and (max-width: 762px) {
+      .dropdown-list {
+        position: relative; } }
 
 .dropdown-blue .dropdown-search {
   background: #3282f7; }

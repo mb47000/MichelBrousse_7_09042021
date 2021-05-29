@@ -61,6 +61,10 @@
       font-weight: 400;
       cursor: pointer;
     }
+
+    @media screen and (max-width: 762px) {
+      position: relative;
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-.card { 
+.card {
   margin-bottom: 50px;
   // height: 364px;
   width: 30.7%;
@@ -54,5 +54,13 @@
         text-overflow: ellipsis;
       }
     }
+  }
+
+  @media screen and (max-width: 1200px) {
+    width: 47%;
+  }
+
+  @media screen and (max-width: 762px) {
+    width: 96%;
   }
 }
