@@ -47,12 +47,12 @@ class RecipesManager {
     this.#tags.ingredients = new Set();
 
     for (let recipe of recipesList) {
-      this.#tags.appareil.add(recipe.getAppliance().replace(/\./g, ""));
+      this.#tags.appareil.add(recipe.getAppliance().replace(/\./g, "").toLowerCase());
       for (let ustensil of recipe.getUstensils()) {
-        this.#tags.ustensiles.add(ustensil);
+        this.#tags.ustensiles.add(ustensil.replace(/\./g, "").toLowerCase());
       }
       for (let ingredient of recipe.getIngredients()) {
-        this.#tags.ingredients.add(ingredient.ingredient);
+        this.#tags.ingredients.add(ingredient.ingredient.replace(/\./g, "").toLowerCase());
       }
     }
   }
@@ -67,7 +67,6 @@ class RecipesManager {
     this.renderRecipes(this.getRecipesEntities(this.noResults()));
   }
 
-  //todo: Reorganize that mess
   removeFilterTags(tag) {
     this.getFiltersTag().splice(
       this.getFiltersTag().findIndex((iTag) => iTag.value === tag),
@@ -129,7 +128,7 @@ class RecipesManager {
     let listToUse =
       (this.#recipesEntitiesTemp.length &&
         (filter.length > this.#lastSearch.length ||
-          this.#filterTags.length ||
+          (filter.length >= this.#lastSearch.length && this.#filterTags.length) ||
           (this.#lastSearch.length && byTag))) ||
       searchLoop
         ? this.#recipesEntitiesTemp
@@ -141,6 +140,9 @@ class RecipesManager {
 
       for (let i = 0; i < formatFilter.length; i++) {
         if(dictionary.hasOwnProperty(formatFilter[i])){
+          if (i === 1) {
+            listToUse = this.#recipesEntitiesTemp;
+          }
           this.#recipesEntitiesTemp = listToUse.filter((recipe) => {
             return (
               dictionary[formatFilter[i]].has(recipe.getId()) 
@@ -151,11 +153,10 @@ class RecipesManager {
         }
       }
       
-     
       this.#lastSearch = filter;
       if (
         this.getFiltersTag().length &&
-        (filter.length < this.#lastSearch.length || !lastRecipesArray.length)
+        (filter.length <= this.#lastSearch.length || !lastRecipesArray.length)
       ) {
         this.getFiltersTag().forEach((tag) => {
           this.filterEntities(tag, true, true);
@@ -170,7 +171,7 @@ class RecipesManager {
               .getIngredients()
               .some(
                 (recipe) =>
-                  recipe.ingredient.toLowerCase().indexOf(filter.value) >= 0
+                  recipe.ingredient.replace(/\./g, "").toLowerCase().indexOf(filter.value) >= 0
               );
           case "appareil":
             return (
@@ -185,7 +186,7 @@ class RecipesManager {
               .getUstensils()
               .some(
                 (ustensile) =>
-                  ustensile.toLowerCase().indexOf(filter.value) >= 0
+                  ustensile.replace(/\./g, "").toLowerCase().indexOf(filter.value) >= 0
               );
         }
       });

@@ -473,7 +473,7 @@ var RecipesManager = /*#__PURE__*/function () {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var recipe = _step.value;
 
-          _classPrivateFieldGet(this, _tags).appareil.add(recipe.getAppliance().replace(/\./g, ""));
+          _classPrivateFieldGet(this, _tags).appareil.add(recipe.getAppliance().replace(/\./g, "").toLowerCase());
 
           var _iterator2 = _createForOfIteratorHelper(recipe.getUstensils()),
               _step2;
@@ -482,7 +482,7 @@ var RecipesManager = /*#__PURE__*/function () {
             for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
               var ustensil = _step2.value;
 
-              _classPrivateFieldGet(this, _tags).ustensiles.add(ustensil);
+              _classPrivateFieldGet(this, _tags).ustensiles.add(ustensil.replace(/\./g, "").toLowerCase());
             }
           } catch (err) {
             _iterator2.e(err);
@@ -497,7 +497,7 @@ var RecipesManager = /*#__PURE__*/function () {
             for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
               var ingredient = _step3.value;
 
-              _classPrivateFieldGet(this, _tags).ingredients.add(ingredient.ingredient);
+              _classPrivateFieldGet(this, _tags).ingredients.add(ingredient.ingredient.replace(/\./g, "").toLowerCase());
             }
           } catch (err) {
             _iterator3.e(err);
@@ -521,8 +521,7 @@ var RecipesManager = /*#__PURE__*/function () {
     value: function addFilterTags(tag) {
       if (this.getFiltersTag().length || this.getLastSearch().length >= 3) this.filterEntities(tag, true, true);else this.filterEntities(tag, true);
       this.renderRecipes(this.getRecipesEntities(this.noResults()));
-    } //todo: Reorganize that mess
-
+    }
   }, {
     key: "removeFilterTags",
     value: function removeFilterTags(tag) {
@@ -594,7 +593,7 @@ var RecipesManager = /*#__PURE__*/function () {
 
       var lastRecipesArray = _classPrivateFieldGet(this, _recipesEntitiesTemp);
 
-      var listToUse = _classPrivateFieldGet(this, _recipesEntitiesTemp).length && (filter.length > _classPrivateFieldGet(this, _lastSearch).length || _classPrivateFieldGet(this, _filterTags).length || _classPrivateFieldGet(this, _lastSearch).length && byTag) || searchLoop ? _classPrivateFieldGet(this, _recipesEntitiesTemp) : _classPrivateFieldGet(this, _recipesEntities);
+      var listToUse = _classPrivateFieldGet(this, _recipesEntitiesTemp).length && (filter.length > _classPrivateFieldGet(this, _lastSearch).length || filter.length >= _classPrivateFieldGet(this, _lastSearch).length && _classPrivateFieldGet(this, _filterTags).length || _classPrivateFieldGet(this, _lastSearch).length && byTag) || searchLoop ? _classPrivateFieldGet(this, _recipesEntitiesTemp) : _classPrivateFieldGet(this, _recipesEntities);
 
       if (!byTag) {
         var _ret = function () {
@@ -606,6 +605,10 @@ var RecipesManager = /*#__PURE__*/function () {
 
           var _loop = function _loop(i) {
             if (dictionary.hasOwnProperty(formatFilter[i])) {
+              if (i === 1) {
+                listToUse = _classPrivateFieldGet(_this3, _recipesEntitiesTemp);
+              }
+
               _classPrivateFieldSet(_this3, _recipesEntitiesTemp, listToUse.filter(function (recipe) {
                 return dictionary[formatFilter[i]].has(recipe.getId());
               }));
@@ -626,7 +629,7 @@ var RecipesManager = /*#__PURE__*/function () {
 
           _classPrivateFieldSet(_this3, _lastSearch, filter);
 
-          if (_this3.getFiltersTag().length && (filter.length < _classPrivateFieldGet(_this3, _lastSearch).length || !lastRecipesArray.length)) {
+          if (_this3.getFiltersTag().length && (filter.length <= _classPrivateFieldGet(_this3, _lastSearch).length || !lastRecipesArray.length)) {
             _this3.getFiltersTag().forEach(function (tag) {
               _this3.filterEntities(tag, true, true);
             });
@@ -639,7 +642,7 @@ var RecipesManager = /*#__PURE__*/function () {
           switch (filter.tagCategory) {
             case "ingredients":
               return recipe.getIngredients().some(function (recipe) {
-                return recipe.ingredient.toLowerCase().indexOf(filter.value) >= 0;
+                return recipe.ingredient.replace(/\./g, "").toLowerCase().indexOf(filter.value) >= 0;
               });
 
             case "appareil":
@@ -647,7 +650,7 @@ var RecipesManager = /*#__PURE__*/function () {
 
             case "ustensiles":
               return recipe.getUstensils().some(function (ustensile) {
-                return ustensile.toLowerCase().indexOf(filter.value) >= 0;
+                return ustensile.replace(/\./g, "").toLowerCase().indexOf(filter.value) >= 0;
               });
           }
         }));
